@@ -93,4 +93,18 @@ public class SecurityPolicyServiceTest {
         keys = securityPolicyService.getProcessDefinitionKeys("bob", null, "");
         assertThat(keys).isEmpty();
     }
+
+    @Test
+    public void shouldNotGetPoliciesWhenEntryMissingPolicyLevels() throws Exception {
+
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("fredslinehasanerror", null, "");
+        assertThat(keys).isEmpty();
+    }
+
+    @Test
+    public void shouldNotGetPoliciesWhenEntryMissingProcDefKeys() throws Exception {
+
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jimhasnothing", null, "");
+        assertThat(keys).isEmpty();
+    }
 }
