@@ -68,6 +68,14 @@ public class SecurityPolicyServiceTest {
     }
 
     @Test
+    public void shouldNotGetProcessDefsForNonExistentPolicy() throws Exception {
+
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), "nonsensepolicy");
+
+        assertThat(keys).isEmpty();
+    }
+
+    @Test
     public void shouldNotGetProcessDefsForGroupWithoutDefs() throws Exception {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hrbitlikerealgroupbutnot","nonexistent"), "rEaD");
