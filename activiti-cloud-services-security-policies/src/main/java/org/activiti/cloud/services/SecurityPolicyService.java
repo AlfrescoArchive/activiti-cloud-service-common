@@ -21,7 +21,7 @@ public class SecurityPolicyService {
     }
 
 
-    public Set<String> getProcessDefinitionKeys(String userId, Collection<String> groups, Collection<String> policyLevels){
+    public Set<String> getProcessDefinitionKeys(String userId, Collection<String> groups, Collection<SecurityPolicy> policyLevels){
 
 
         Set<String> procDefKeys = new HashSet<String>();
@@ -38,7 +38,7 @@ public class SecurityPolicyService {
 
     }
 
-    private void getProcDefKeysForUserOrGroup(Collection<String> policyLevels, Set<String> procDefKeys, String userOrGroup, Map<String, String> policies) {
+    private void getProcDefKeysForUserOrGroup(Collection<SecurityPolicy> policyLevels, Set<String> procDefKeys, String userOrGroup, Map<String, String> policies) {
 
         if(userOrGroup == null){
             return;
@@ -54,9 +54,9 @@ public class SecurityPolicyService {
 
                 //filter for the policy level we're looking for
 
-                for(String policyLevel:policyLevels){
+                for(SecurityPolicy policyLevel:policyLevels){
 
-                    if(policyLevel !=null && !policyLevel.isEmpty() && key.toLowerCase().contains("."+policyLevel.toLowerCase())){
+                    if(policyLevel !=null && key.toLowerCase().contains("."+policyLevel.name())){
 
                         String propertyValue = policies.get(key);
 
@@ -66,7 +66,7 @@ public class SecurityPolicyService {
 
                             procDefKeys.addAll(Arrays.asList(propertyValue.split(",")));
 
-                        } else if(propertyValue!=null){
+                        } else if(propertyValue!=null && !propertyValue.isEmpty()){
 
                             procDefKeys.add(propertyValue);
                         }
@@ -76,9 +76,9 @@ public class SecurityPolicyService {
         }
     }
 
-    public Set<String> getProcessDefinitionKeys(String userId, Collection<String> groups, String minPolicyLevel){
-        if (minPolicyLevel != null && minPolicyLevel.toLowerCase().equalsIgnoreCase("read")){
-            return getProcessDefinitionKeys(userId,groups,Arrays.asList("read","write"));
+    public Set<String> getProcessDefinitionKeys(String userId, Collection<String> groups, SecurityPolicy minPolicyLevel){
+        if (minPolicyLevel != null && minPolicyLevel.equals(SecurityPolicy.read)){
+            return getProcessDefinitionKeys(userId,groups,Arrays.asList(SecurityPolicy.read,SecurityPolicy.write));
         }
         return getProcessDefinitionKeys(userId,groups,Arrays.asList(minPolicyLevel));
     }

@@ -26,19 +26,9 @@ public class SecurityPolicyServiceTest {
 
 
     @Test
-    public void shouldGetProcessDefsByUserAndPoliciesCaseInsensitive() throws Exception {
+    public void shouldGetProcessDefsByUserAndPolicies() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, Arrays.asList("wRiTe"));
-
-        assertThat(keys).isNotNull();
-        assertThat(keys).hasSize(1);
-        assertThat(keys).contains("SimpleProcess");
-    }
-
-    @Test
-    public void shouldGetProcessDefsByUserAndMinPolicyCaseInsensitive() throws Exception {
-
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, "rEaD");
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, Arrays.asList(SecurityPolicy.write,SecurityPolicy.read));
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(1);
@@ -46,9 +36,19 @@ public class SecurityPolicyServiceTest {
     }
 
     @Test
-    public void shouldGetProcessDefsByGroupAndPoliciesCaseInsensitive() throws Exception {
+    public void shouldGetProcessDefsByUserAndMinPolicy() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), Arrays.asList("rEaD"));
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, SecurityPolicy.read);
+
+        assertThat(keys).isNotNull();
+        assertThat(keys).hasSize(1);
+        assertThat(keys).contains("SimpleProcess");
+    }
+
+    @Test
+    public void shouldGetProcessDefsByGroupAndPolicies() throws Exception {
+
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), Arrays.asList(SecurityPolicy.read));
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);
@@ -57,62 +57,51 @@ public class SecurityPolicyServiceTest {
     }
 
     @Test
-    public void shouldGetProcessDefsByGroupsAndMinPolicyCaseInsensitive() throws Exception {
+    public void shouldGetProcessDefsByGroupsAndMinPolicy() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr","nonexistent"), "rEaD");
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr","nonexistent"), SecurityPolicy.read);
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);
         assertThat(keys).contains("SimpleProcess1");
         assertThat(keys).contains("SimpleProcess2");
-    }
-
-    @Test
-    public void shouldNotGetProcessDefsForNonExistentPolicy() throws Exception {
-
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), "nonsensepolicy");
-
-        assertThat(keys).isEmpty();
     }
 
     @Test
     public void shouldNotGetProcessDefsForGroupWithoutDefs() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hrbitlikerealgroupbutnot","nonexistent"), "rEaD");
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hrbitlikerealgroupbutnot","nonexistent"), SecurityPolicy.read);
 
         assertThat(keys).isEmpty();
     }
 
     @Test
-    public void shouldNotGetPoliciesWithoutUserOrGroup() throws Exception {
+    public void shouldNotGetProcessDefsWithoutUserOrGroup() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,null, Arrays.asList("write"));
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,null, Arrays.asList(SecurityPolicy.write));
 
         assertThat(keys).isEmpty();
     }
 
     @Test
-    public void shouldNotGetPoliciesWithoutPolicyLevels() throws Exception {
+    public void shouldNotGetProcessDefsWithoutPolicyLevels() throws Exception {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), new HashSet<>());
 
         assertThat(keys).isEmpty();
+    }
 
-        keys = securityPolicyService.getProcessDefinitionKeys("bob", null, "");
+    @Test
+    public void shouldNotGetProcessDefsWhenEntryMissingPolicyLevels() throws Exception {
+
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("fredslinehasanerror", null, SecurityPolicy.read);
         assertThat(keys).isEmpty();
     }
 
     @Test
-    public void shouldNotGetPoliciesWhenEntryMissingPolicyLevels() throws Exception {
+    public void shouldNotGetProcessDefsWhenEntryMissingProcDefKeys() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("fredslinehasanerror", null, "");
-        assertThat(keys).isEmpty();
-    }
-
-    @Test
-    public void shouldNotGetPoliciesWhenEntryMissingProcDefKeys() throws Exception {
-
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jimhasnothing", null, "");
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jimhasnothing", null, SecurityPolicy.read);
         assertThat(keys).isEmpty();
     }
 }
