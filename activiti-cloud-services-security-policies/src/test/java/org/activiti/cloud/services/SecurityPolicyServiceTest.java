@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@TestPropertySource("classpath:propstest.properties")
 public class SecurityPolicyServiceTest {
 
     @Autowired
@@ -28,7 +30,7 @@ public class SecurityPolicyServiceTest {
     @Test
     public void shouldGetProcessDefsByUserAndPolicies() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, Arrays.asList(SecurityPolicy.write,SecurityPolicy.read));
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jEff",null, Arrays.asList(SecurityPolicy.write,SecurityPolicy.read));
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(1);
@@ -38,7 +40,7 @@ public class SecurityPolicyServiceTest {
     @Test
     public void shouldGetProcessDefsByUserAndMinPolicy() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, SecurityPolicy.read);
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jEff",null, SecurityPolicy.read);
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(1);
@@ -48,7 +50,7 @@ public class SecurityPolicyServiceTest {
     @Test
     public void shouldGetProcessDefsByGroupAndPolicies() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), Arrays.asList(SecurityPolicy.read));
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("finance"), Arrays.asList(SecurityPolicy.read));
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);
@@ -59,7 +61,7 @@ public class SecurityPolicyServiceTest {
     @Test
     public void shouldGetProcessDefsByGroupsAndMinPolicy() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr","nonexistent"), SecurityPolicy.read);
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("finance","nonexistent"), SecurityPolicy.read);
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);
@@ -86,7 +88,7 @@ public class SecurityPolicyServiceTest {
     @Test
     public void shouldNotGetProcessDefsWithoutPolicyLevels() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), new HashSet<>());
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("finance"), new HashSet<>());
 
         assertThat(keys).isEmpty();
     }
