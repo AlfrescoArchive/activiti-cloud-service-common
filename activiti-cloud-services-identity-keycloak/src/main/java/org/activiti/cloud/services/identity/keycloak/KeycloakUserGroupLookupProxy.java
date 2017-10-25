@@ -72,9 +72,7 @@ public class KeycloakUserGroupLookupProxy implements UserGroupLookupProxy {
                 groups.add(groupRepresentation.getName());
             }
         }
-
-        //to use roles instead of groups the query would be keycloak.realms().realm(realm).users().get(user.getId()).roles().realmLevel().listEffective()
-
+        
         return groups;
     }
 }
