@@ -1,6 +1,6 @@
 package org.activiti.cloud.services;
 
-import org.activiti.conf.ActivitiProperty;
+import org.activiti.conf.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +14,10 @@ import java.util.Set;
 public class SecurityPolicyService {
 
     @Autowired
-    private ActivitiProperty securityProperties;
+    private SecurityProperties securityProperties;
 
     public boolean policiesDefined(){
-        return ((securityProperties.getCloud().getGroup()!=null && !securityProperties.getCloud().getGroup().isEmpty()) || (securityProperties.getCloud().getUser()!=null && !securityProperties.getCloud().getUser().isEmpty()));
+        return ((securityProperties.getGroup()!=null && !securityProperties.getGroup().isEmpty()) || (securityProperties.getUser()!=null && !securityProperties.getUser().isEmpty()));
     }
 
 
@@ -28,11 +28,11 @@ public class SecurityPolicyService {
 
         if(groups != null) {
             for (String group : groups) {
-                getProcDefKeysForUserOrGroup(policyLevels, procDefKeys, group, securityProperties.getCloud().getGroup());
+                getProcDefKeysForUserOrGroup(policyLevels, procDefKeys, group, securityProperties.getGroup());
             }
         }
 
-        getProcDefKeysForUserOrGroup(policyLevels, procDefKeys, userId, securityProperties.getCloud().getUser());
+        getProcDefKeysForUserOrGroup(policyLevels, procDefKeys, userId, securityProperties.getUser());
 
         return procDefKeys;
 
