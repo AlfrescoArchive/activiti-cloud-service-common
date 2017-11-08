@@ -14,22 +14,38 @@
  * limitations under the License.
  */
 
-package org.activiti.cloud.services.core.model.commands;
+package org.activiti.cloud.services.api.commands;
+
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.activiti.cloud.services.api.commands.Command;
 
-public class ReleaseTaskCmd extends AbstractCommand {
+public class ClaimTaskCmd implements Command {
 
+    private final String id;
     private String taskId;
+    private String assignee;
 
     @JsonCreator
-    public ReleaseTaskCmd(@JsonProperty("taskId") String taskId) {
-        super();
+    public ClaimTaskCmd(@JsonProperty("taskId") String taskId,
+                        @JsonProperty("assignee") String assignee) {
+        this.id = UUID.randomUUID().toString();
         this.taskId = taskId;
+        this.assignee = assignee;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     public String getTaskId() {
         return taskId;
+    }
+
+    public String getAssignee() {
+        return assignee;
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.activiti.cloud.services.core.model;
+package org.activiti.cloud.services.api.model;
 
 import java.util.Map;
 
@@ -23,35 +23,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TaskVariables {
+public class ProcessInstanceVariables {
 
-    public enum TaskVariableScope {
-        LOCAL, GLOBAL
-    }
-
-    private String taskId;
+    private String processInstanceId;
 
     private Map<String, Object> variables;
 
-    private TaskVariableScope scope;
-
-    public TaskVariables(String taskId,
-                         Map<String, Object> variables,
-                         TaskVariableScope scope) {
-        this.taskId = taskId;
+    public ProcessInstanceVariables(String processInstanceId,
+                                    Map<String, Object> variables) {
+        this.processInstanceId = processInstanceId;
         this.variables = variables;
-        this.scope = scope;
     }
 
     public Map<String, Object> getVariables() {
         return variables;
     }
 
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public TaskVariableScope getScope() {
-        return scope;
+    public String getProcessInstanceId() {
+        return processInstanceId;
     }
 }

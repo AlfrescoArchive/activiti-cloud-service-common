@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProcessInstanceConverter implements ModelConverter<ProcessInstance, org.activiti.cloud.services.core.model.ProcessInstance> {
+public class ProcessInstanceConverter implements ModelConverter<ProcessInstance, org.activiti.cloud.services.api.model.ProcessInstance> {
 
     private final ListConverter listConverter;
 
@@ -32,32 +32,32 @@ public class ProcessInstanceConverter implements ModelConverter<ProcessInstance,
     }
 
     @Override
-    public org.activiti.cloud.services.core.model.ProcessInstance from(ProcessInstance source) {
-        org.activiti.cloud.services.core.model.ProcessInstance processInstance = null;
+    public org.activiti.cloud.services.api.model.ProcessInstance from(ProcessInstance source) {
+        org.activiti.cloud.services.api.model.ProcessInstance processInstance = null;
         if (source != null) {
-            processInstance = new org.activiti.cloud.services.core.model.ProcessInstance(source.getId(),
-                                                                                         source.getName(),
-                                                                                         source.getDescription(),
-                                                                                         source.getProcessDefinitionId(),
-                                                                                         source.getStartUserId(),
-                                                                                         source.getStartTime(),
-                                                                                         source.getBusinessKey(),
-                                                                                         calculateStatus(source));
+            processInstance = new org.activiti.cloud.services.api.model.ProcessInstance(source.getId(),
+                                                                                        source.getName(),
+                                                                                        source.getDescription(),
+                                                                                        source.getProcessDefinitionId(),
+                                                                                        source.getStartUserId(),
+                                                                                        source.getStartTime(),
+                                                                                        source.getBusinessKey(),
+                                                                                        calculateStatus(source));
         }
         return processInstance;
     }
 
     private String calculateStatus(ProcessInstance source) {
         if (source.isSuspended()) {
-            return org.activiti.cloud.services.core.model.ProcessInstance.ProcessInstanceStatus.SUSPENDED.name();
+            return org.activiti.cloud.services.api.model.ProcessInstance.ProcessInstanceStatus.SUSPENDED.name();
         } else if (source.isEnded()) {
-            return org.activiti.cloud.services.core.model.ProcessInstance.ProcessInstanceStatus.COMPLETED.name();
+            return org.activiti.cloud.services.api.model.ProcessInstance.ProcessInstanceStatus.COMPLETED.name();
         }
-        return org.activiti.cloud.services.core.model.ProcessInstance.ProcessInstanceStatus.RUNNING.name();
+        return org.activiti.cloud.services.api.model.ProcessInstance.ProcessInstanceStatus.RUNNING.name();
     }
 
     @Override
-    public List<org.activiti.cloud.services.core.model.ProcessInstance> from(List<ProcessInstance> processInstances) {
+    public List<org.activiti.cloud.services.api.model.ProcessInstance> from(List<ProcessInstance> processInstances) {
         return listConverter.from(processInstances,
                                   this);
     }

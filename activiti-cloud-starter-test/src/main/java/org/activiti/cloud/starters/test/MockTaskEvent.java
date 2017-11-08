@@ -1,7 +1,7 @@
 package org.activiti.cloud.starters.test;
 
 import org.activiti.cloud.services.api.events.ProcessEngineEvent;
-import org.activiti.cloud.services.core.model.Task;
+import org.activiti.cloud.services.api.model.Task;
 
 public class MockTaskEvent extends MockProcessEngineEvent {
 

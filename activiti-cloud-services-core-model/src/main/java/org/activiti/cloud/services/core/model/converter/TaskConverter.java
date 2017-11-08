@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TaskConverter implements ModelConverter<Task, org.activiti.cloud.services.core.model.Task> {
+public class TaskConverter implements ModelConverter<Task, org.activiti.cloud.services.api.model.Task> {
 
     private final ListConverter listConverter;
 
@@ -32,37 +32,37 @@ public class TaskConverter implements ModelConverter<Task, org.activiti.cloud.se
     }
 
     @Override
-    public org.activiti.cloud.services.core.model.Task from(Task source) {
-        org.activiti.cloud.services.core.model.Task task = null;
+    public org.activiti.cloud.services.api.model.Task from(Task source) {
+        org.activiti.cloud.services.api.model.Task task = null;
         if (source != null) {
-            task = new org.activiti.cloud.services.core.model.Task(source.getId(),
-                                                                   source.getOwner(),
-                                                                   source.getAssignee(),
-                                                                   source.getName(),
-                                                                   source.getDescription(),
-                                                                   source.getCreateTime(),
-                                                                   source.getClaimTime(),
-                                                                   source.getDueDate(),
-                                                                   source.getPriority(),
-                                                                   source.getProcessDefinitionId(),
-                                                                   source.getProcessInstanceId(),
-                                                                   source.getParentTaskId(),
-                                                                   calculateStatus(source));
+            task = new org.activiti.cloud.services.api.model.Task(source.getId(),
+                                                                  source.getOwner(),
+                                                                  source.getAssignee(),
+                                                                  source.getName(),
+                                                                  source.getDescription(),
+                                                                  source.getCreateTime(),
+                                                                  source.getClaimTime(),
+                                                                  source.getDueDate(),
+                                                                  source.getPriority(),
+                                                                  source.getProcessDefinitionId(),
+                                                                  source.getProcessInstanceId(),
+                                                                  source.getParentTaskId(),
+                                                                  calculateStatus(source));
         }
         return task;
     }
 
     private String calculateStatus(Task source) {
         if (source.isSuspended()) {
-            return org.activiti.cloud.services.core.model.Task.TaskStatus.SUSPENDED.name();
+            return org.activiti.cloud.services.api.model.Task.TaskStatus.SUSPENDED.name();
         } else if (source.getAssignee() != null && !source.getAssignee().isEmpty()) {
-            return org.activiti.cloud.services.core.model.Task.TaskStatus.ASSIGNED.name();
+            return org.activiti.cloud.services.api.model.Task.TaskStatus.ASSIGNED.name();
         }
-        return org.activiti.cloud.services.core.model.Task.TaskStatus.CREATED.name();
+        return org.activiti.cloud.services.api.model.Task.TaskStatus.CREATED.name();
     }
 
     @Override
-    public List<org.activiti.cloud.services.core.model.Task> from(List<Task> tasks) {
+    public List<org.activiti.cloud.services.api.model.Task> from(List<Task> tasks) {
         return listConverter.from(tasks,
                                   this);
     }

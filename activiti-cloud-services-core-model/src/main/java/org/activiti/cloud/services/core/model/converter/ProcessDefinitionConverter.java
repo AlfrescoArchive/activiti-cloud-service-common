@@ -17,7 +17,7 @@ package org.activiti.cloud.services.core.model.converter;
 
 import java.util.List;
 
-import org.activiti.cloud.services.core.model.ProcessDefinition;
+import org.activiti.cloud.services.api.model.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

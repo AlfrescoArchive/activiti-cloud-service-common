@@ -1,4 +1,4 @@
-package org.activiti.cloud.services.core.model;
+package org.activiti.cloud.services.api.model;
 
 import java.util.Set;
 

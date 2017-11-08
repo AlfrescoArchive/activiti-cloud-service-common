@@ -14,29 +14,39 @@
  * limitations under the License.
  */
 
-package org.activiti.cloud.services.core.model.commands;
+package org.activiti.cloud.services.api.commands;
+
+import java.util.Map;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.activiti.cloud.services.api.commands.Command;
 
-public class ClaimTaskCmd extends AbstractCommand {
+public class CompleteTaskCmd implements Command {
 
+    private final String id;
     private String taskId;
-    private String assignee;
+    private Map<String, Object> outputVariables;
 
     @JsonCreator
-    public ClaimTaskCmd(@JsonProperty("taskId") String taskId,
-                        @JsonProperty("assignee") String assignee) {
-        super();
+    public CompleteTaskCmd(@JsonProperty("taskId") String taskId,
+                           @JsonProperty("outputVariables") Map<String, Object> outputVariables) {
+        this.id = UUID.randomUUID().toString();
         this.taskId = taskId;
-        this.assignee = assignee;
+        this.outputVariables = outputVariables;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public Map<String, Object> getOutputVariables() {
+        return outputVariables;
     }
 
     public String getTaskId() {
         return taskId;
-    }
-
-    public String getAssignee() {
-        return assignee;
     }
 }

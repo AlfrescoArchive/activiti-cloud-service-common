@@ -1,16 +1,25 @@
-package org.activiti.cloud.services.core.model.commands;
+package org.activiti.cloud.services.api.commands;
+
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.activiti.cloud.services.api.commands.Command;
 
-public class SuspendProcessInstanceCmd extends AbstractCommand {
+public class SuspendProcessInstanceCmd implements Command {
 
+    private final String id;
     private String processInstanceId;
 
     @JsonCreator
     public SuspendProcessInstanceCmd(@JsonProperty("processInstanceId") String processInstanceId) {
-        super();
+        this.id = UUID.randomUUID().toString();
         this.processInstanceId = processInstanceId;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     public String getProcessInstanceId() {

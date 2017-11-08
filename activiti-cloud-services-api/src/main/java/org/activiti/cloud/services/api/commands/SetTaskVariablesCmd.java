@@ -14,24 +14,31 @@
  * limitations under the License.
  */
 
-package org.activiti.cloud.services.core.model.commands;
+package org.activiti.cloud.services.api.commands;
 
 import java.util.Map;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.activiti.cloud.services.api.commands.Command;
 
-public class SetTaskVariablesCmd extends AbstractCommand {
+public class SetTaskVariablesCmd implements Command {
 
+    private final String id;
     private String taskId;
     private Map<String, ? extends Object> variables;
 
     @JsonCreator
     public SetTaskVariablesCmd(@JsonProperty("taskId") String taskId,
                                @JsonProperty("variables") Map<String, ? extends Object> variables) {
-        super();
+        this.id = UUID.randomUUID().toString();
         this.taskId = taskId;
         this.variables = variables;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTaskId() {

@@ -14,36 +14,31 @@
  * limitations under the License.
  */
 
-package org.activiti.cloud.services.core.model.commands;
+package org.activiti.cloud.services.api.commands;
 
-import java.util.Map;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.activiti.cloud.services.api.commands.Command;
 
-public class SignalProcessInstancesCmd extends AbstractCommand {
+public class ReleaseTaskCmd implements Command {
 
-    private String name;
-    private Map<String, Object> inputVariables;
+    private final String id;
+    private String taskId;
 
     @JsonCreator
-    public SignalProcessInstancesCmd(@JsonProperty("name") String name,
-                                     @JsonProperty("inputVariables") Map<String, Object> inputVariables) {
-        super();
-        this.name = name;
-        this.inputVariables = inputVariables;
+    public ReleaseTaskCmd(@JsonProperty("taskId") String taskId) {
+        this.id = UUID.randomUUID().toString();
+        this.taskId = taskId;
     }
 
-    public SignalProcessInstancesCmd(String name) {
-        super();
-        this.name = name;
+    @Override
+    public String getId() {
+        return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Map<String, Object> getInputVariables() {
-        return inputVariables;
+    public String getTaskId() {
+        return taskId;
     }
 }
