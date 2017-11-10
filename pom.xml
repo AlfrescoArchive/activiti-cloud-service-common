@@ -13,13 +13,14 @@
   <version>7-201711-EA-salaboy_1524_remove_abstract_types-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <properties>
+    <version.activiti>7-201711-EA-SNAPSHOT</version.activiti>
+  </properties>
+
   <modules>
-    <module>activiti-cloud-services-api</module>
-    <module>activiti-cloud-services-core-model</module>
     <module>activiti-cloud-services-identity-keycloak</module>
     <module>activiti-cloud-services-identity-basic</module>
     <module>activiti-cloud-services-test</module>
-    <module>activiti-cloud-starter-test</module>
   </modules>
 
   <distributionManagement>
