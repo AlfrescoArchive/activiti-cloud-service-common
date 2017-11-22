@@ -29,18 +29,32 @@ import java.util.List;
 @Component
 public class BasicUserGroupLookupProxy  implements UserGroupLookupProxy {
 
-    @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    public BasicUserGroupLookupProxy(UserDetailsService userDetailsService){
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     public List<String> getGroupsForCandidateUser(String candidateUser) {
         List<String> groups = new ArrayList<>();
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(candidateUser);
-        for(GrantedAuthority authority:userDetails.getAuthorities()){
-            groups.add(authority.getAuthority());
+        if(userDetails!=null) {
+            for (GrantedAuthority authority : userDetails.getAuthorities()) {
+                groups.add(authority.getAuthority());
+            }
         }
 
         return groups;
+    }
+
+    public UserDetailsService getUserDetailsService() {
+        return userDetailsService;
+    }
+
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 }

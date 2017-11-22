@@ -14,8 +14,12 @@ public class BasicUserRoleLookupProxy implements UserRoleLookupProxy {
     @Value("${adminrolename:admin}")
     private String adminRoleName;
 
-    @Autowired
     private UserGroupLookupProxy userGroupLookupProxy;
+
+    @Autowired
+    public BasicUserRoleLookupProxy(UserGroupLookupProxy userGroupLookupProxy){
+        this.userGroupLookupProxy = userGroupLookupProxy;
+    }
 
 
     @Override
@@ -31,5 +35,13 @@ public class BasicUserRoleLookupProxy implements UserRoleLookupProxy {
             return true;
         }
         return false;
+    }
+
+    public String getAdminRoleName() {
+        return adminRoleName;
+    }
+
+    public void setAdminRoleName(String adminRoleName) {
+        this.adminRoleName = adminRoleName;
     }
 }
