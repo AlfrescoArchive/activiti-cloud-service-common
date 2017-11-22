@@ -69,6 +69,11 @@ public class SecurityPolicyServiceTest {
 
         assertThat(keys).hasSize(1);
         assertThat(keys).contains("SimpleProcess");
+
+        //write as min policy should work too for this case
+        keys = securityPolicyService.getProcessDefinitionKeys("jEff",null, SecurityPolicy.WRITE);
+
+        assertThat(keys).contains("SimpleProcess");
     }
 
     @Test
