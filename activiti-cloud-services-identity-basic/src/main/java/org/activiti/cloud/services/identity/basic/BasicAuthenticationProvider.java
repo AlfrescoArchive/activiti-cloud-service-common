@@ -27,9 +27,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public class BasicAuthenticationProvider implements AuthenticationProvider {
 
+  private UserDetailsService userDetailsService;
 
   @Autowired
-  private UserDetailsService userDetailsService;
+  public BasicAuthenticationProvider(UserDetailsService userDetailsService){
+    this.userDetailsService = userDetailsService;
+  }
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -51,5 +54,13 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
   @Override
   public boolean supports(Class<?> authentication) {
     return authentication.equals(UsernamePasswordAuthenticationToken.class);
+  }
+
+  public UserDetailsService getUserDetailsService() {
+    return userDetailsService;
+  }
+
+  public void setUserDetailsService(UserDetailsService userDetailsService) {
+    this.userDetailsService = userDetailsService;
   }
 }
