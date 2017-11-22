@@ -6,6 +6,7 @@ import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,42 +16,25 @@ import java.util.List;
 @Component
 public class KeycloakUserRoleLookupProxy implements UserRoleLookupProxy {
 
-    @Value("${keycloak.auth-server-url}")
-    private String authServer;
-
-    @Value("${keycloak.realm}")
-    private String realm;
-
-    @Value("${keycloakadminclientapp}")
-    private String keycloakadminclientapp;
-
-    @Value("${keycloakclientuser}")
-    private String clientUser;
-
-    @Value("${keycloakclientpassword}")
-    private String clientPassword;
-
     @Value("${admin-role-name:admin}")
     private String adminRoleName;
 
+    private KeycloakInstanceWrapper keycloakInstanceWrapper;
+
+    @Autowired
+    public KeycloakUserRoleLookupProxy(KeycloakInstanceWrapper keycloakInstanceWrapper){
+        this.keycloakInstanceWrapper = keycloakInstanceWrapper;
+    }
+
     public List<String> getRolesForUser(String userName) {
 
-        Keycloak keycloak = Keycloak.getInstance(authServer,
-                realm,
-                clientUser,
-                clientPassword,
-                keycloakadminclientapp);
-
-
-        List<UserRepresentation> users = keycloak.realms().realm(realm).users().search(userName,
-                0,
-                10);
+        List<UserRepresentation> users = keycloakInstanceWrapper.getUser(userName);
         if (users.size() > 1) {
             throw new UnsupportedOperationException("User id " + userName + " is not unique");
         }
         UserRepresentation user = users.get(0);
 
-        List<RoleRepresentation> roleRepresentations = keycloak.realms().realm(realm).users().get(user.getId()).roles().realmLevel().listEffective();
+        List<RoleRepresentation> roleRepresentations = keycloakInstanceWrapper.getRolesForUser(user.getId());
 
         List<String> roles = null;
         if (roleRepresentations != null && roleRepresentations.size() > 0) {
@@ -70,4 +54,22 @@ public class KeycloakUserRoleLookupProxy implements UserRoleLookupProxy {
         }
         return false;
     }
+
+
+    public KeycloakInstanceWrapper getKeycloakInstanceWrapper() {
+        return keycloakInstanceWrapper;
+    }
+
+    public void setKeycloakInstanceWrapper(KeycloakInstanceWrapper keycloakInstanceWrapper) {
+        this.keycloakInstanceWrapper = keycloakInstanceWrapper;
+    }
+
+    public String getAdminRoleName() {
+        return adminRoleName;
+    }
+
+    public void setAdminRoleName(String adminRoleName) {
+        this.adminRoleName = adminRoleName;
+    }
+
 }
