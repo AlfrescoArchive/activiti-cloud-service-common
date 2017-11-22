@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 public class BasicAuthenticationProviderTest {
@@ -43,5 +45,20 @@ public class BasicAuthenticationProviderTest {
                 .thenReturn(user);
 
         assertThat(basicAuthenticationProvider.authenticate(authentication)).isNotNull();
+    }
+
+    @Test
+    public void testAuthenticationFailure(){
+
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("testrole"));
+        User user = new User("test","pass",authorities);
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken("differentuser","differentpass",authorities);
+
+        when(userDetailsService.loadUserByUsername("differentuser"))
+                .thenReturn(user);
+
+        assertThatExceptionOfType(BadCredentialsException.class).isThrownBy(() -> basicAuthenticationProvider.authenticate(authentication));
     }
 }
