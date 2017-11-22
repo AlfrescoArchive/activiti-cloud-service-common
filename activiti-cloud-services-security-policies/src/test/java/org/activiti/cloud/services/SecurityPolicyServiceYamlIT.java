@@ -29,7 +29,6 @@ public class SecurityPolicyServiceYamlIT {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, Arrays.asList(SecurityPolicy.WRITE,SecurityPolicy.READ));
 
-        assertThat(keys).isNotNull();
         assertThat(keys).hasSize(1);
         assertThat(keys).contains("TestProcess");
     }
@@ -40,7 +39,6 @@ public class SecurityPolicyServiceYamlIT {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), Arrays.asList(SecurityPolicy.READ));
 
-        assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);
         assertThat(keys).contains("SimpleProcessYML1");
         assertThat(keys).contains("SimpleProcessYML2");

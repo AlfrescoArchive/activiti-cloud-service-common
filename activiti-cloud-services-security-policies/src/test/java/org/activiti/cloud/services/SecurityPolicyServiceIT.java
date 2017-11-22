@@ -32,7 +32,6 @@ public class SecurityPolicyServiceIT {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jEff",null, Arrays.asList(SecurityPolicy.WRITE,SecurityPolicy.READ));
 
-        assertThat(keys).isNotNull();
         assertThat(keys).hasSize(1);
         assertThat(keys).contains("SimpleProcess");
     }
@@ -42,7 +41,6 @@ public class SecurityPolicyServiceIT {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jEff",null, SecurityPolicy.READ);
 
-        assertThat(keys).isNotNull();
         assertThat(keys).hasSize(1);
         assertThat(keys).contains("SimpleProcess");
     }
@@ -52,10 +50,8 @@ public class SecurityPolicyServiceIT {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("finance"), Arrays.asList(SecurityPolicy.READ));
 
-        assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);
-        assertThat(keys).contains("SimpleProcess1");
-        assertThat(keys).contains("SimpleProcess2");
+        assertThat(keys).contains("SimpleProcess1","SimpleProcess2");
     }
 
     @Test
@@ -63,10 +59,8 @@ public class SecurityPolicyServiceIT {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("finance","nonexistent"), SecurityPolicy.READ);
 
-        assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);
-        assertThat(keys).contains("SimpleProcess1");
-        assertThat(keys).contains("SimpleProcess2");
+        assertThat(keys).contains("SimpleProcess1","SimpleProcess2");
     }
 
     @Test
