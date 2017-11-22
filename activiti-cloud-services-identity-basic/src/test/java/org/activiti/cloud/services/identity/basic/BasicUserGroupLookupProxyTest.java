@@ -29,7 +29,7 @@ public class BasicUserGroupLookupProxyTest {
     private UserDetails userDetails;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         userGroupLookupProxy = new BasicUserGroupLookupProxy(userDetailsService);
 
@@ -37,7 +37,7 @@ public class BasicUserGroupLookupProxyTest {
 
 
     @Test
-    public void testGetGroups() throws Exception {
+    public void testGetGroups() {
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("testrole"));

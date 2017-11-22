@@ -20,14 +20,14 @@ public class BasicUserRoleLookupProxyTest {
     private UserGroupLookupProxy userGroupLookupProxy;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         userRoleLookupProxy = new BasicUserRoleLookupProxy(userGroupLookupProxy);
         userRoleLookupProxy.setAdminRoleName("admin");
     }
 
     @Test
-    public void testGetRoles() throws Exception {
+    public void testGetRoles() {
 
         List<String> roles = new ArrayList<>();
         roles.add("role");
@@ -40,7 +40,7 @@ public class BasicUserRoleLookupProxyTest {
     }
 
     @Test
-    public void testAdminRole() throws Exception {
+    public void testAdminRole()  {
 
         List<String> roles = new ArrayList<>();
         roles.add("admin");
