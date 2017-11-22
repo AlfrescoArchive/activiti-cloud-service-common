@@ -56,11 +56,4 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
     return authentication.equals(UsernamePasswordAuthenticationToken.class);
   }
 
-  public UserDetailsService getUserDetailsService() {
-    return userDetailsService;
-  }
-
-  public void setUserDetailsService(UserDetailsService userDetailsService) {
-    this.userDetailsService = userDetailsService;
-  }
 }

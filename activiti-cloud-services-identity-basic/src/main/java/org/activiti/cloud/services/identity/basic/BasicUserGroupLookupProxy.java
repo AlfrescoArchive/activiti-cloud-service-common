@@ -50,11 +50,4 @@ public class BasicUserGroupLookupProxy  implements UserGroupLookupProxy {
         return groups;
     }
 
-    public UserDetailsService getUserDetailsService() {
-        return userDetailsService;
-    }
-
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 }

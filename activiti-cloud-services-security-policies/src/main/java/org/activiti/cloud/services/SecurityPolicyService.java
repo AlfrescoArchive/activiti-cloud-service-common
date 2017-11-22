@@ -14,8 +14,12 @@ import java.util.Set;
 @Component
 public class SecurityPolicyService {
 
-    @Autowired
     private SecurityProperties securityProperties;
+
+    @Autowired
+    public SecurityPolicyService(SecurityProperties securityProperties){
+        this.securityProperties = securityProperties;
+    }
 
     public boolean policiesDefined(){
         return ((securityProperties.getGroup()!=null && !securityProperties.getGroup().isEmpty()) || (securityProperties.getUser()!=null && !securityProperties.getUser().isEmpty()));

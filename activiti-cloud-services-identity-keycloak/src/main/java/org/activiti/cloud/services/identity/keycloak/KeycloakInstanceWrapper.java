@@ -49,8 +49,9 @@ public class KeycloakInstanceWrapper {
     }
 
     public List<UserRepresentation> getUser(String userIdentifier){
-        return getRealm().users().search(userIdentifier,
+        List<UserRepresentation> users = getRealm().users().search(userIdentifier,
                 0,
                 10);
+        return users;
     }
 }

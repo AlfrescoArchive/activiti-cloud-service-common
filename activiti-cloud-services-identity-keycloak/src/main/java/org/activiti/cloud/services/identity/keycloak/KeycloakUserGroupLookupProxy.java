@@ -57,11 +57,4 @@ public class KeycloakUserGroupLookupProxy implements UserGroupLookupProxy {
         return groups;
     }
 
-    public KeycloakInstanceWrapper getKeycloakInstanceWrapper() {
-        return keycloakInstanceWrapper;
-    }
-
-    public void setKeycloakInstanceWrapper(KeycloakInstanceWrapper keycloakInstanceWrapper) {
-        this.keycloakInstanceWrapper = keycloakInstanceWrapper;
-    }
 }

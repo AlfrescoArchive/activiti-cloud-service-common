@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
@@ -62,5 +63,23 @@ public class KeycloakUserRoleLookupProxyTest {
         when(keycloakInstanceWrapper.getRolesForUser(anyString())).thenReturn(roleRepresentations);
 
         assertThat(userRoleLookupProxy.isAdmin("bob")).isTrue();
+    }
+
+    @Test
+    public void testMustBeUniqueUser() {
+
+        List<UserRepresentation> users = new ArrayList<>();
+        UserRepresentation userRepresentation1 = new UserRepresentation();
+        userRepresentation1.setId("id1");
+        users.add(userRepresentation1);
+
+        UserRepresentation userRepresentation2 = new UserRepresentation();
+        userRepresentation2.setId("id2");
+        users.add(userRepresentation2);
+
+        when(keycloakInstanceWrapper.getUser(anyString())).thenReturn(users);
+
+        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userRoleLookupProxy.getRolesForUser("fred"));
+
     }
 }

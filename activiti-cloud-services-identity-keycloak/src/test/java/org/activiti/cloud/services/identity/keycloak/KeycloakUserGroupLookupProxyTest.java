@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.anyString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,5 +45,23 @@ public class KeycloakUserGroupLookupProxyTest {
     @Test
     public void testGetGroups() {
         assertThat(userGroupLookupProxy.getGroupsForCandidateUser("bob")).contains("testgroup");
+    }
+
+    @Test
+    public void testMustBeUniqueUser() {
+
+        List<UserRepresentation> users = new ArrayList<>();
+        UserRepresentation userRepresentation1 = new UserRepresentation();
+        userRepresentation1.setId("id1");
+        users.add(userRepresentation1);
+
+        UserRepresentation userRepresentation2 = new UserRepresentation();
+        userRepresentation2.setId("id2");
+        users.add(userRepresentation2);
+
+        when(keycloakInstanceWrapper.getUser(anyString())).thenReturn(users);
+
+        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userGroupLookupProxy.getGroupsForCandidateUser("fred"));
+
     }
 }

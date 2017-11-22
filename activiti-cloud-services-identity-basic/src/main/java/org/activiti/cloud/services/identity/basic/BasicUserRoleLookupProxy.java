@@ -37,10 +37,6 @@ public class BasicUserRoleLookupProxy implements UserRoleLookupProxy {
         return false;
     }
 
-    public String getAdminRoleName() {
-        return adminRoleName;
-    }
-
     public void setAdminRoleName(String adminRoleName) {
         this.adminRoleName = adminRoleName;
     }

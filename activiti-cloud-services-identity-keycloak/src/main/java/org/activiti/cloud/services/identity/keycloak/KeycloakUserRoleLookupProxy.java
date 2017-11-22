@@ -32,6 +32,7 @@ public class KeycloakUserRoleLookupProxy implements UserRoleLookupProxy {
         if (users.size() > 1) {
             throw new UnsupportedOperationException("User id " + userName + " is not unique");
         }
+
         UserRepresentation user = users.get(0);
 
         List<RoleRepresentation> roleRepresentations = keycloakInstanceWrapper.getRolesForUser(user.getId());
@@ -53,19 +54,6 @@ public class KeycloakUserRoleLookupProxy implements UserRoleLookupProxy {
             return true;
         }
         return false;
-    }
-
-
-    public KeycloakInstanceWrapper getKeycloakInstanceWrapper() {
-        return keycloakInstanceWrapper;
-    }
-
-    public void setKeycloakInstanceWrapper(KeycloakInstanceWrapper keycloakInstanceWrapper) {
-        this.keycloakInstanceWrapper = keycloakInstanceWrapper;
-    }
-
-    public String getAdminRoleName() {
-        return adminRoleName;
     }
 
     public void setAdminRoleName(String adminRoleName) {
