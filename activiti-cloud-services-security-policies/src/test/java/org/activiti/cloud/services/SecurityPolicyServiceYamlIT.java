@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SecurityPolicyServiceYamlTest {
+public class SecurityPolicyServiceYamlIT {
 
     @Autowired
     private SecurityPolicyService securityPolicyService;
@@ -27,7 +27,7 @@ public class SecurityPolicyServiceYamlTest {
     @Test
     public void shouldGetProcessDefsByUserAndPolicies() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, Arrays.asList(SecurityPolicy.write,SecurityPolicy.read));
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, Arrays.asList(SecurityPolicy.WRITE,SecurityPolicy.READ));
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(1);
@@ -38,7 +38,7 @@ public class SecurityPolicyServiceYamlTest {
     @Test
     public void shouldGetProcessDefsByGroupAndPolicies() throws Exception {
 
-        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), Arrays.asList(SecurityPolicy.read));
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), Arrays.asList(SecurityPolicy.READ));
 
         assertThat(keys).isNotNull();
         assertThat(keys).hasSize(2);

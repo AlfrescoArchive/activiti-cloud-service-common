@@ -4,6 +4,7 @@ import org.activiti.conf.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -48,37 +49,44 @@ public class SecurityPolicyService {
 
         for(String key: policies.keySet()){
 
-            //filter to this specific user or group
-
-            if(key!=null && key.toLowerCase().contains(userOrGroup.toLowerCase()+".")){
-
-                //filter for the policy level we're looking for
+            if(keyMatchesUserOrGroup(userOrGroup, key)){
 
                 for(SecurityPolicy policyLevel:policyLevels){
 
-                    if(policyLevel !=null && key.toLowerCase().contains("."+policyLevel.name())){
+                    if(keyMatchesPolicyLevel(key, policyLevel)){
 
-                        String propertyValue = policies.get(key);
-
-                        // get the process definition key or keys for this property line
-
-                        if(propertyValue!=null && propertyValue.contains(",")){
-
-                            procDefKeys.addAll(Arrays.asList(propertyValue.split(",")));
-
-                        } else if(propertyValue!=null && !propertyValue.isEmpty()){
-
-                            procDefKeys.add(propertyValue);
-                        }
+                        procDefKeys.addAll(getProcDefKeysFromPropertyValue(policies.get(key)));
                     }
                 }
             }
         }
     }
 
+    private boolean keyMatchesPolicyLevel(String key, SecurityPolicy policyLevel) {
+        return policyLevel !=null && key.toLowerCase().contains("."+policyLevel.name().toLowerCase()); //note . at beginning
+    }
+
+    private boolean keyMatchesUserOrGroup(String userOrGroup, String key) {
+        return key!=null && key.toLowerCase().contains(userOrGroup.toLowerCase()+"."); //note . at end
+    }
+
+    private Collection<String> getProcDefKeysFromPropertyValue(String propertyValue) {
+
+        if(propertyValue!=null && propertyValue.contains(",")){
+
+            return Arrays.asList(propertyValue.split(","));
+
+        } else if(propertyValue!=null && !propertyValue.isEmpty()){
+
+            return Arrays.asList(propertyValue);
+        }
+
+        return new ArrayList<>();
+    }
+
     public Set<String> getProcessDefinitionKeys(String userId, Collection<String> groups, SecurityPolicy minPolicyLevel){
-        if (minPolicyLevel != null && minPolicyLevel.equals(SecurityPolicy.read)){
-            return getProcessDefinitionKeys(userId,groups,Arrays.asList(SecurityPolicy.read,SecurityPolicy.write));
+        if (minPolicyLevel != null && minPolicyLevel.equals(SecurityPolicy.READ)){
+            return getProcessDefinitionKeys(userId,groups,Arrays.asList(SecurityPolicy.READ,SecurityPolicy.WRITE));
         }
         return getProcessDefinitionKeys(userId,groups,Arrays.asList(minPolicyLevel));
     }
