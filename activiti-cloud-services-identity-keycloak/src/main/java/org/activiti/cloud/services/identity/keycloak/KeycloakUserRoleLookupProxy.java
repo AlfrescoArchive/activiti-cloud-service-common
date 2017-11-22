@@ -30,7 +30,7 @@ public class KeycloakUserRoleLookupProxy implements UserRoleLookupProxy {
     @Value("${keycloakclientpassword}")
     private String clientPassword;
 
-    @Value("${adminrolename:admin}")
+    @Value("${admin-role-name:admin}")
     private String adminRoleName;
 
     public List<String> getRolesForUser(String userName) {

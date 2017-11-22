@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class BasicUserRoleLookupProxy implements UserRoleLookupProxy {
 
-    @Value("${adminrolename:admin}")
+    @Value("${admin-role-name:admin}")
     private String adminRoleName;
 
     private UserGroupLookupProxy userGroupLookupProxy;
