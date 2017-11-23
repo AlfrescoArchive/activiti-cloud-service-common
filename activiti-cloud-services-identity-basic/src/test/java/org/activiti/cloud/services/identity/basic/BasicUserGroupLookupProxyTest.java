@@ -25,9 +25,6 @@ public class BasicUserGroupLookupProxyTest {
     @Mock
     private UserDetailsService userDetailsService;
 
-    @Mock
-    private UserDetails userDetails;
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);

@@ -1,9 +1,6 @@
 package org.activiti.cloud.services.identity.keycloak;
 
 import org.activiti.engine.UserRoleLookupProxy;
-import org.keycloak.admin.client.Keycloak;
-import org.keycloak.representations.idm.GroupRepresentation;
-import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +47,7 @@ public class KeycloakUserRoleLookupProxy implements UserRoleLookupProxy {
 
     public boolean isAdmin(String userId){
         List<String> roles = getRolesForUser(userId);
-        if(roles != null && roles.contains(adminRoleName)){
-            return true;
-        }
-        return false;
+        return (roles != null && roles.contains(adminRoleName));
     }
 
     public void setAdminRoleName(String adminRoleName) {

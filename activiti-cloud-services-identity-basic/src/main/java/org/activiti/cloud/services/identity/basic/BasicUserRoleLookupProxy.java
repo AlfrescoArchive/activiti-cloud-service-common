@@ -31,10 +31,7 @@ public class BasicUserRoleLookupProxy implements UserRoleLookupProxy {
     @Override
     public boolean isAdmin(String userId){
         List<String> roles = getRolesForUser(userId);
-        if(roles != null && roles.contains(adminRoleName)){
-            return true;
-        }
-        return false;
+        return (roles != null && roles.contains(adminRoleName));
     }
 
     public void setAdminRoleName(String adminRoleName) {
