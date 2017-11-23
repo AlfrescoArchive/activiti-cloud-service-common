@@ -1,9 +1,7 @@
 package org.activiti.cloud.services.identity.keycloak;
 
-import org.activiti.engine.UserRoleLookupProxy;
 import org.junit.Before;
 import org.junit.Test;
-import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mockito.Mock;
