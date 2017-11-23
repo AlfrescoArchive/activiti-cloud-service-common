@@ -14,7 +14,7 @@ import java.util.HashSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @TestPropertySource("classpath:propstest.properties")
 public class SecurityPolicyServiceIT {
 
@@ -104,5 +104,26 @@ public class SecurityPolicyServiceIT {
 
         Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("jimhasnothing", null, SecurityPolicy.READ);
         assertThat(keys).isEmpty();
+    }
+
+    //cases from YAML
+    @Test
+    public void shouldGetProcessDefsByUserAndPoliciesYml() throws Exception {
+
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys("bOb",null, Arrays.asList(SecurityPolicy.WRITE,SecurityPolicy.READ));
+
+        assertThat(keys).hasSize(1);
+        assertThat(keys).contains("TestProcess");
+    }
+
+
+    @Test
+    public void shouldGetProcessDefsByGroupAndPoliciesYml() throws Exception {
+
+        Collection<String> keys = securityPolicyService.getProcessDefinitionKeys(null,Arrays.asList("hr"), Arrays.asList(SecurityPolicy.READ));
+
+        assertThat(keys).hasSize(2);
+        assertThat(keys).contains("SimpleProcessYML1");
+        assertThat(keys).contains("SimpleProcessYML2");
     }
 }

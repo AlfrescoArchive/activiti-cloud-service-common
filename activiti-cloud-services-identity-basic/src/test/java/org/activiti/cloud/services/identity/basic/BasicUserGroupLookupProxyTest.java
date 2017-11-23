@@ -1,8 +1,8 @@
 package org.activiti.cloud.services.identity.basic;
 
-import org.activiti.engine.UserGroupLookupProxy;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BasicUserGroupLookupProxyTest {
 
-    private UserGroupLookupProxy userGroupLookupProxy;
+    @InjectMocks
+    private BasicUserGroupLookupProxy userGroupLookupProxy;
 
     @Mock
     private UserDetailsService userDetailsService;
@@ -26,7 +27,6 @@ public class BasicUserGroupLookupProxyTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        userGroupLookupProxy = new BasicUserGroupLookupProxy(userDetailsService);
 
     }
 

@@ -2,6 +2,7 @@ package org.activiti.cloud.services.identity.basic;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 public class BasicAuthenticationProviderTest {
 
+    @InjectMocks
     private BasicAuthenticationProvider basicAuthenticationProvider;
 
     @Mock
@@ -29,7 +31,6 @@ public class BasicAuthenticationProviderTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        basicAuthenticationProvider = new BasicAuthenticationProvider(userDetailsService);
     }
 
     @Test
@@ -59,5 +60,11 @@ public class BasicAuthenticationProviderTest {
                 .thenReturn(user);
 
         assertThatExceptionOfType(BadCredentialsException.class).isThrownBy(() -> basicAuthenticationProvider.authenticate(authentication));
+    }
+
+    @Test
+    public void testSupports(){
+        assertThat(basicAuthenticationProvider.supports(UsernamePasswordAuthenticationToken.class)).isTrue();
+        assertThat(basicAuthenticationProvider.supports(Integer.class)).isFalse();
     }
 }

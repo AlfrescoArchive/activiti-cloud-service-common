@@ -3,6 +3,7 @@ package org.activiti.cloud.services;
 import org.activiti.conf.SecurityProperties;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.when;
 
 public class SecurityPolicyServiceTest {
 
+    @InjectMocks
     private SecurityPolicyService securityPolicyService;
 
     @Mock
@@ -24,8 +26,6 @@ public class SecurityPolicyServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        securityPolicyService = new SecurityPolicyService(securityProperties);
 
         HashMap<String,String> group = new HashMap<>();
         group.put("finance.policy.read","SimpleProcess1,SimpleProcess2");
