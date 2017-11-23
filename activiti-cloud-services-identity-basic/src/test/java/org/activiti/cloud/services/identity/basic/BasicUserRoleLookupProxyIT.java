@@ -14,14 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = BasicUserRoleLookupProxyIT.Configuration.class)
 public class BasicUserRoleLookupProxyIT {
 
+    @Autowired
+    private UserRoleLookupProxy userRoleLookupProxy;
+    
     @org.springframework.context.annotation.Configuration
     @ComponentScan("org.activiti.cloud.services.identity.basic")
     public static class Configuration{
 
     }
-
-    @Autowired
-    private UserRoleLookupProxy userRoleLookupProxy;
 
     @Test
     public void testAdminRole() throws Exception {
