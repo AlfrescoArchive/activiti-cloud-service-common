@@ -19,13 +19,13 @@ public class KeycloakInstanceWrapper {
     @Value("${keycloak.realm}")
     private String realm;
 
-    @Value("${keycloakadminclientapp}")
-    private String keycloakadminclientapp;
+    @Value("${keycloak-admin-client-app}")
+    private String keycloakAdminClientApp;
 
-    @Value("${keycloakclientuser}")
+    @Value("${keycloak-client-user}")
     private String clientUser;
 
-    @Value("${keycloakclientpassword}")
+    @Value("${keycloak-client-password}")
     private String clientPassword;
 
     private Keycloak getKeycloakInstance() {
@@ -33,7 +33,7 @@ public class KeycloakInstanceWrapper {
                 realm,
                 clientUser,
                 clientPassword,
-                keycloakadminclientapp);
+                keycloakAdminClientApp);
     }
 
     protected RealmResource getRealm(){
