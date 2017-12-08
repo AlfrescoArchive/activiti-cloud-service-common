@@ -20,15 +20,13 @@ public class KeycloakAuthenticationProviderTest {
 
     private KeycloakActivitiAuthenticationProvider keycloakActivitiAuthenticationProvider = new KeycloakActivitiAuthenticationProvider();
     private KeycloakAuthenticationToken token;
-    private KeycloakAccount keycloakAccount;
-    private KeycloakPrincipal principal;
     private RefreshableKeycloakSecurityContext keycloakSecurityContext;
 
     @Before
     public void setUp(){
         keycloakSecurityContext = mock(RefreshableKeycloakSecurityContext.class);
-        principal = new KeycloakPrincipal("bob",keycloakSecurityContext);
-        keycloakAccount = new SimpleKeycloakAccount(principal, new HashSet<>(Arrays.asList("role1","role2")),keycloakSecurityContext);
+        KeycloakPrincipal principal = new KeycloakPrincipal("bob",keycloakSecurityContext);
+        KeycloakAccount keycloakAccount = new SimpleKeycloakAccount(principal, new HashSet<>(Arrays.asList("role1","role2")),keycloakSecurityContext);
         token = new KeycloakAuthenticationToken(keycloakAccount,false);
 
     }
