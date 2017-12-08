@@ -21,12 +21,12 @@ public class KeycloakUserGroupLookupProxyTest {
     private UserGroupLookupProxy userGroupLookupProxy;
 
     @Mock
-    private KeycloakInstanceWrapper keycloakInstanceWrapper;
+    private KeycloakLookupService keycloakLookupService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        userGroupLookupProxy = new KeycloakUserGroupLookupProxy(keycloakInstanceWrapper);
+        userGroupLookupProxy = new KeycloakUserGroupLookupProxy(keycloakLookupService);
         List<UserRepresentation> users = new ArrayList<>();
         UserRepresentation userRepresentation = new UserRepresentation();
         userRepresentation.setId("id");
@@ -37,8 +37,8 @@ public class KeycloakUserGroupLookupProxyTest {
         groupRepresentations.add(groupRepresentation);
 
 
-        when(keycloakInstanceWrapper.getUser(anyString())).thenReturn(users);
-        when(keycloakInstanceWrapper.getGroupsForUser(anyString())).thenReturn(groupRepresentations);
+        when(keycloakLookupService.getUser(anyString())).thenReturn(users);
+        when(keycloakLookupService.getGroupsForUser(anyString())).thenReturn(groupRepresentations);
 
     }
 
@@ -59,7 +59,7 @@ public class KeycloakUserGroupLookupProxyTest {
         userRepresentation2.setId("id2");
         users.add(userRepresentation2);
 
-        when(keycloakInstanceWrapper.getUser(anyString())).thenReturn(users);
+        when(keycloakLookupService.getUser(anyString())).thenReturn(users);
 
         assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userGroupLookupProxy.getGroupsForCandidateUser("fred"));
 

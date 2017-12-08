@@ -43,10 +43,10 @@ public class KeycloakSecurityContextClientRequestInterceptor implements ClientHt
     @Value("${keycloak.resource}")
     protected String resource;
 
-    @Value("${keycloak-test-user}")
+    @Value("${activiti.keycloak.test-user}")
     protected String keycloakTestUser;
 
-    @Value("${keycloak-test-password}")
+    @Value("${activiti.keycloak.test-password}")
     protected String keycloakTestPassword;
 
     @Override

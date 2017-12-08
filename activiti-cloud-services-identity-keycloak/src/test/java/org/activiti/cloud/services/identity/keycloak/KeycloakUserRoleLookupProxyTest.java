@@ -20,12 +20,12 @@ public class KeycloakUserRoleLookupProxyTest {
     private KeycloakUserRoleLookupProxy userRoleLookupProxy;
 
     @Mock
-    private KeycloakInstanceWrapper keycloakInstanceWrapper;
+    private KeycloakLookupService keycloakLookupService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        userRoleLookupProxy = new KeycloakUserRoleLookupProxy(keycloakInstanceWrapper);
+        userRoleLookupProxy = new KeycloakUserRoleLookupProxy(keycloakLookupService);
         userRoleLookupProxy.setAdminRoleName("admin");
 
         List<UserRepresentation> users = new ArrayList<>();
@@ -33,7 +33,7 @@ public class KeycloakUserRoleLookupProxyTest {
         userRepresentation.setId("id");
         users.add(userRepresentation);
 
-        when(keycloakInstanceWrapper.getUser(anyString())).thenReturn(users);
+        when(keycloakLookupService.getUser(anyString())).thenReturn(users);
 
     }
 
@@ -44,7 +44,7 @@ public class KeycloakUserRoleLookupProxyTest {
         RoleRepresentation roleRepresentation = new RoleRepresentation();
         roleRepresentation.setName("testrole");
         roleRepresentations.add(roleRepresentation);
-        when(keycloakInstanceWrapper.getRolesForUser(anyString())).thenReturn(roleRepresentations);
+        when(keycloakLookupService.getRolesForUser(anyString())).thenReturn(roleRepresentations);
 
 
         assertThat(userRoleLookupProxy.getRolesForUser("bob")).contains("testrole");
@@ -58,7 +58,7 @@ public class KeycloakUserRoleLookupProxyTest {
         RoleRepresentation roleRepresentation = new RoleRepresentation();
         roleRepresentation.setName("admin");
         roleRepresentations.add(roleRepresentation);
-        when(keycloakInstanceWrapper.getRolesForUser(anyString())).thenReturn(roleRepresentations);
+        when(keycloakLookupService.getRolesForUser(anyString())).thenReturn(roleRepresentations);
 
         assertThat(userRoleLookupProxy.isAdmin("bob")).isTrue();
     }
@@ -75,7 +75,7 @@ public class KeycloakUserRoleLookupProxyTest {
         userRepresentation2.setId("id2");
         users.add(userRepresentation2);
 
-        when(keycloakInstanceWrapper.getUser(anyString())).thenReturn(users);
+        when(keycloakLookupService.getUser(anyString())).thenReturn(users);
 
         assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userRoleLookupProxy.getRolesForUser("fred"));
 
