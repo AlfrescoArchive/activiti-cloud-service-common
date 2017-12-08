@@ -25,12 +25,8 @@ public class KeycloakUserRoleLookupProxy implements UserRoleLookupProxy {
 
     public List<String> getRolesForUser(String userName) {
 
-        List<UserRepresentation> users = keycloakLookupService.getUser(userName);
-        if (users.size() > 1) {
-            throw new UnsupportedOperationException("User id " + userName + " is not unique");
-        }
+        UserRepresentation user = keycloakLookupService.getUser(userName);
 
-        UserRepresentation user = users.get(0);
 
         List<RoleRepresentation> roleRepresentations = keycloakLookupService.getRolesForUser(user.getId());
 

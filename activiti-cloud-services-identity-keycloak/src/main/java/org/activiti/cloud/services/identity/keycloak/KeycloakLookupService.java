@@ -22,10 +22,17 @@ public class KeycloakLookupService {
         return keycloakInstanceWrapper.getRealm().users().get(userId).roles().realmLevel().listEffective();
     }
 
-    public List<UserRepresentation> getUser(String userIdentifier){
+    public UserRepresentation getUser(String userIdentifier) throws UnsupportedOperationException {
         List<UserRepresentation> users = keycloakInstanceWrapper.getRealm().users().search(userIdentifier,
                 0,
-                10);
-        return users;
+                2);
+
+        if (users.size() > 1) {
+            throw new UnsupportedOperationException("User id " + userIdentifier + " is not unique");
+        }
+        if (users.size() == 0) {
+            throw new UnsupportedOperationException("User id " + userIdentifier + " not found");
+        }
+        return users.get(0);
     }
 }

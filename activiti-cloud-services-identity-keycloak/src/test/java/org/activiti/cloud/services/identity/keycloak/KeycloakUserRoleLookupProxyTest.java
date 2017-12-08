@@ -28,12 +28,10 @@ public class KeycloakUserRoleLookupProxyTest {
         userRoleLookupProxy = new KeycloakUserRoleLookupProxy(keycloakLookupService);
         userRoleLookupProxy.setAdminRoleName("admin");
 
-        List<UserRepresentation> users = new ArrayList<>();
         UserRepresentation userRepresentation = new UserRepresentation();
         userRepresentation.setId("id");
-        users.add(userRepresentation);
 
-        when(keycloakLookupService.getUser(anyString())).thenReturn(users);
+        when(keycloakLookupService.getUser(anyString())).thenReturn(userRepresentation);
 
     }
 
@@ -63,21 +61,4 @@ public class KeycloakUserRoleLookupProxyTest {
         assertThat(userRoleLookupProxy.isAdmin("bob")).isTrue();
     }
 
-    @Test
-    public void testMustBeUniqueUser() {
-
-        List<UserRepresentation> users = new ArrayList<>();
-        UserRepresentation userRepresentation1 = new UserRepresentation();
-        userRepresentation1.setId("id1");
-        users.add(userRepresentation1);
-
-        UserRepresentation userRepresentation2 = new UserRepresentation();
-        userRepresentation2.setId("id2");
-        users.add(userRepresentation2);
-
-        when(keycloakLookupService.getUser(anyString())).thenReturn(users);
-
-        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userRoleLookupProxy.getRolesForUser("fred"));
-
-    }
 }

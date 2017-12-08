@@ -38,11 +38,7 @@ public class KeycloakUserGroupLookupProxy implements UserGroupLookupProxy {
     public List<String> getGroupsForCandidateUser(String candidateUser) {
         //candidateUser here will use identifier chosen in KeycloakActivitiAuthenticationProvider
 
-        List<UserRepresentation> users = keycloakLookupService.getUser(candidateUser);
-        if (users.size() > 1) {
-            throw new UnsupportedOperationException("User id " + candidateUser + " is not unique");
-        }
-        UserRepresentation user = users.get(0);
+        UserRepresentation user = keycloakLookupService.getUser(candidateUser);
 
         List<GroupRepresentation> groupRepresentations = keycloakLookupService.getGroupsForUser(user.getId());
 
