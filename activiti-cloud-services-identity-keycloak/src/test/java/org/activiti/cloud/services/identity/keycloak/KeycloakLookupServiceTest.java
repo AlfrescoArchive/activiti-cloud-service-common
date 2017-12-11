@@ -1,5 +1,9 @@
 package org.activiti.cloud.services.identity.keycloak;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -13,14 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class KeycloakLookupServiceTest {
@@ -55,7 +54,7 @@ public class KeycloakLookupServiceTest {
     }
 
     @Test
-    public void testGetGroupsForUser(){
+    public void testGetGroupsForUser() {
         when(keycloakInstanceWrapper.getRealm()).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
         when(usersResource.get(any())).thenReturn(userResource);
@@ -64,7 +63,7 @@ public class KeycloakLookupServiceTest {
     }
 
     @Test
-    public void testGetRolesForUser(){
+    public void testGetRolesForUser() {
         when(keycloakInstanceWrapper.getRealm()).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
         when(usersResource.get(any())).thenReturn(userResource);
@@ -75,11 +74,13 @@ public class KeycloakLookupServiceTest {
     }
 
     @Test
-    public void testGetUser(){
+    public void testGetUser() {
         when(keycloakInstanceWrapper.getRealm()).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
         when(usersResource.get(any())).thenReturn(userResource);
-        when(usersResource.search("bob",0,2)).thenReturn(Arrays.asList(new UserRepresentation()));
+        when(usersResource.search("bob",
+                                  0,
+                                  2)).thenReturn(Arrays.asList(new UserRepresentation()));
         assertThat(keycloakLookupService.getUser("bob")).isNotNull();
     }
 
@@ -97,18 +98,21 @@ public class KeycloakLookupServiceTest {
 
         when(keycloakInstanceWrapper.getRealm()).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
-        when(usersResource.search("fred",0,2)).thenReturn(users);
+        when(usersResource.search("fred",
+                                  0,
+                                  2)).thenReturn(users);
 
         assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> keycloakLookupService.getUser("fred"));
-
     }
 
     @Test
-    public void testGetNoUser(){
+    public void testGetNoUser() {
         when(keycloakInstanceWrapper.getRealm()).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
         when(usersResource.get(any())).thenReturn(userResource);
-        when(usersResource.search("bob",0,2)).thenReturn(new ArrayList<>());
+        when(usersResource.search("bob",
+                                  0,
+                                  2)).thenReturn(new ArrayList<>());
         assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> keycloakLookupService.getUser("bob"));
     }
 }
