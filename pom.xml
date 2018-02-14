@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.activiti.cloud</groupId>
     <artifactId>activiti-cloud-parent</artifactId>
-    <version>7-201802-EA-SNAPSHOT</version>
+    <version>7-201802-EA-constantinc_1725_swagger_patch-SNAPSHOT</version>
   </parent>
 
   <artifactId>activiti-cloud-service-common-parent</artifactId>
@@ -28,6 +28,7 @@
     <module>activiti-cloud-services-monitoring</module>
     <module>activiti-cloud-services-tracing</module>
     <module>activiti-cloud-services-logging</module>
+    <module>springfox-data-rest-patch</module>
   </modules>
 
   <dependencyManagement>
