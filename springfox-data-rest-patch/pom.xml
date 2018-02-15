@@ -6,13 +6,13 @@
     <version>7-201802-EA-constantinc_1725_swagger_patch-SNAPSHOT</version>
   </parent>
 
-  <artifactId>activiti-cloud-services-monitoring</artifactId>
-  <name>Activiti Cloud Services :: Monitoring</name>
-  <description>Activiti Cloud Services Monitoring</description>
+  <artifactId>springfox-data-rest-patch</artifactId>
+  <version>2.8.0-SNAPSHOT</version>
+
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-data-rest</artifactId>
     </dependency>
   </dependencies>
 </project>
