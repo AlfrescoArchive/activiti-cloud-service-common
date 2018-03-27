@@ -146,7 +146,7 @@ public class SecurityPoliciesServiceIT {
         Map<String,Set<String>> keys = securityPoliciesService.getProcessDefinitionKeys(null,Arrays.asList("accounts","nonexistent"), SecurityPolicy.READ);
 
         assertThat(keys.get(rb1)).hasSize(1);
-        assertThat(keys.get(rb1)).contains("*");
+        assertThat(keys.get(rb1)).contains(securityPoliciesService.getWildcard());
     }
 
 }

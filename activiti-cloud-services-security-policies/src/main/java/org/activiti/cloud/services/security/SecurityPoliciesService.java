@@ -19,6 +19,9 @@ public class SecurityPoliciesService {
 
     private SecurityProperties securityProperties;
 
+    @Value("${wildcard:*}")
+    private String wildcard;
+
     @Autowired
     public SecurityPoliciesService(SecurityProperties securityProperties){
         this.securityProperties = securityProperties;
@@ -119,4 +122,7 @@ public class SecurityPoliciesService {
         return getProcessDefinitionKeys(userId,groups,Arrays.asList(minPolicyLevel));
     }
 
+    public String getWildcard(){
+        return wildcard;
+    }
 }
