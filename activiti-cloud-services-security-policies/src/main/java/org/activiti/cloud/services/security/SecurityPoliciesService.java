@@ -74,7 +74,7 @@ public class SecurityPoliciesService {
     }
 
     private boolean keyMatchesUserOrGroup(String userOrGroup, String key) {
-        return key!=null && key.toLowerCase().startsWith(userOrGroup.toLowerCase()+"."); //note . at end
+        return key!=null && key.replace("-","").toLowerCase().startsWith(userOrGroup.replace("-","").toLowerCase()+"."); //note . at end
     }
 
     private void addFilterKeysToMap(String propertyValue, String key, Map<String,Set<String>> procDefKeys) {

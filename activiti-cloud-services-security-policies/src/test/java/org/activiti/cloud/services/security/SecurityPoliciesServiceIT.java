@@ -133,9 +133,8 @@ public class SecurityPoliciesServiceIT {
     }
 
     @Test
-    public void shouldGetWildcardByUserAndPolicies() throws Exception {
-
-        Map<String,Set<String>> keys = securityPoliciesService.getProcessDefinitionKeys("gary",null, Arrays.asList(SecurityPolicy.WRITE,SecurityPolicy.READ));
+    public void shouldGetWildcardByUserAndPoliciesIgnoringHyphens() throws Exception {
+        Map<String,Set<String>> keys = securityPoliciesService.getProcessDefinitionKeys("jim-bob",null, Arrays.asList(SecurityPolicy.WRITE,SecurityPolicy.READ));
 
         assertThat(keys.get(rb1)).hasSize(1);
         assertThat(keys.get(rb1)).contains("*");
