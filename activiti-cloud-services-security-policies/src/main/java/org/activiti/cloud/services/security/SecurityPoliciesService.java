@@ -19,7 +19,7 @@ public class SecurityPoliciesService {
 
     private SecurityProperties securityProperties;
 
-    @Value("${wildcard:*}")
+    @Value("${activiti.security.policies.wildcard:*}")
     private String wildcard;
 
     @Autowired
