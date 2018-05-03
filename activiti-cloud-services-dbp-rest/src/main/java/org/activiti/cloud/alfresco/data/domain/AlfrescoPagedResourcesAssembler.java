@@ -50,15 +50,19 @@ public class AlfrescoPagedResourcesAssembler<T> extends PagedResourcesAssembler<
 
     public <R extends ResourceSupport> PagedResources<R> toResource(Pageable pageable,
                                                                     Page<T> page,
+                                                                    Class<T> entityType,
                                                                     ResourceAssembler<T, R> assembler) {
-        PagedResources<R> pagedResources = toResource(page,
-                                                            assembler);
-        ExtendedPageMetadata extendedPageMetadata = extendedPageMetadataConverter.toExtendedPageMetadata(pageable.getOffset(),
-                                                                                                         pagedResources.getMetadata());
-        pagedResources = new PagedResources<>(pagedResources.getContent(),
-                                              extendedPageMetadata,
-                                              pagedResources.getLinks());
+        PagedResources<R> pagedResources = page.getContent().isEmpty() ?
+                (PagedResources<R>) toEmptyResource(page,
+                                                    entityType) :
+                toResource(page,
+                           assembler);
 
-        return pagedResources;
+        ExtendedPageMetadata extendedPageMetadata = extendedPageMetadataConverter
+                .toExtendedPageMetadata(pageable.getOffset(),
+                                        pagedResources.getMetadata());
+        return new PagedResources<>(pagedResources.getContent(),
+                                    extendedPageMetadata,
+                                    pagedResources.getLinks());
     }
 }
