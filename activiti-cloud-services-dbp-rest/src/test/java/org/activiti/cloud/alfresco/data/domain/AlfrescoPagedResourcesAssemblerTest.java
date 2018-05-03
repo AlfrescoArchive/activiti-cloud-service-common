@@ -16,8 +16,6 @@
 
 package org.activiti.cloud.alfresco.data.domain;
 
-import java.util.Collections;
-
 import org.activiti.cloud.alfresco.argument.resolver.AlfrescoPageRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +23,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.ResourceSupport;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
@@ -48,9 +48,6 @@ public class AlfrescoPagedResourcesAssemblerTest {
     @Mock
     private ResourceAssembler<String, ResourceSupport> resourceAssembler;
 
-    @Mock
-    private Page<String> page;
-
     @Before
     public void setUp() throws Exception {
         initMocks(this);
@@ -64,22 +61,29 @@ public class AlfrescoPagedResourcesAssemblerTest {
                                                                           null);
 
         PagedResources.PageMetadata baseMetadata = new PagedResources.PageMetadata(10,
-                                                                               0,
-                                                                               30);
+                                                                                   0,
+                                                                                   30);
         ResourceSupport resourceSupport = new ResourceSupport();
         Link link = mock(Link.class);
-        PagedResources<ResourceSupport> basePagedResources = new PagedResources<>(Collections.singletonList(resourceSupport),
-                                                                                        baseMetadata,
-                                                                                        link);
+        PagedResources<ResourceSupport> basePagedResources = new PagedResources<>(singletonList(resourceSupport),
+                                                                                  baseMetadata,
+                                                                                  link);
+
+        Page<String> page = PageableExecutionUtils
+                .getPage(singletonList("any"),
+                         alfrescoPageRequest,
+                         () -> 100);
 
         doReturn(basePagedResources).when(alfrescoPagedResourcesAssembler).toResource(page,
                                                                                       resourceAssembler);
         ExtendedPageMetadata extendedPageMetadata = mock(ExtendedPageMetadata.class);
-        given(extendedPageMetadataConverter.toExtendedPageMetadata(alfrescoPageRequest.getOffset(), baseMetadata)).willReturn(extendedPageMetadata);
+        given(extendedPageMetadataConverter.toExtendedPageMetadata(alfrescoPageRequest.getOffset(),
+                                                                   baseMetadata)).willReturn(extendedPageMetadata);
 
         //when
         PagedResources<ResourceSupport> pagedResources = alfrescoPagedResourcesAssembler.toResource(alfrescoPageRequest,
                                                                                                     page,
+                                                                                                    String.class,
                                                                                                     resourceAssembler);
 
         //then
@@ -88,5 +92,4 @@ public class AlfrescoPagedResourcesAssemblerTest {
         assertThat(pagedResources.getContent()).containsExactly(resourceSupport);
         assertThat(pagedResources.getLinks()).contains(link);
     }
-
 }

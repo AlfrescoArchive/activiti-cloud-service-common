@@ -37,11 +37,13 @@ public class PagedResourcesConverter {
     }
 
     public <T> AlfrescoPageContentListWrapper<T> toAlfrescoContentListWrapper(PagedResources<Resource<T>> pagedResources) {
-        Collection<Resource<T>> pagedResourceContent = pagedResources.getContent();
-        List<AlfrescoContentEntry<T>> baseContent = pagedResourceContent.stream()
-                .map(
-                        resource -> new AlfrescoContentEntry<>(resource.getContent())
-                ).collect(Collectors.toList());
+        Collection<?> pagedResourceContent = pagedResources.getContent();
+        List<AlfrescoContentEntry<T>> baseContent = pagedResourceContent
+                .stream()
+                .filter(resource -> resource instanceof Resource)
+                .map(resource -> ((Resource<T>) resource).getContent())
+                .map(AlfrescoContentEntry::new)
+                .collect(Collectors.toList());
 
         AlfrescoPageMetadata pagination = pageMetadataConverter.toAlfrescoPageMetadata(pagedResources.getMetadata(),
                                                                                        baseContent.size());
