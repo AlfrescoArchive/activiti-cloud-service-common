@@ -13,8 +13,14 @@ import org.springframework.context.annotation.Configuration;
 public class SecurityPoliciesAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(SecurityPoliciesService.class)
+    @ConditionalOnMissingBean
     public SecurityPoliciesService securityPoliciesService(SecurityProperties securityProperties){
         return new SecurityPoliciesService(securityProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public BaseAuthenticationWrapper baseAuthenticationWrapper(){
+        return new BaseAuthenticationWrapper();
     }
 }
