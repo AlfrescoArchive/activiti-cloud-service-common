@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @ConditionalOnProperty(name = "activiti.cloud.services.identity.basic.enabled", matchIfMissing = true)
@@ -15,7 +15,7 @@ public class ActivitiBasicIdentityAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(BasicUserGroupLookupProxy.class)
-    public BasicUserGroupLookupProxy basicUserGroupLookupProxy(InMemoryUserDetailsManager userDetailsService){
+    public BasicUserGroupLookupProxy basicUserGroupLookupProxy(UserDetailsService userDetailsService){
         return new BasicUserGroupLookupProxy(userDetailsService);
     }
 
