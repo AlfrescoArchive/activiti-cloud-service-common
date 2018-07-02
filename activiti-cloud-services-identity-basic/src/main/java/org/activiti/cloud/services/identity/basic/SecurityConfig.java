@@ -19,6 +19,7 @@ package org.activiti.cloud.services.identity.basic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -32,7 +33,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableWebSecurity
-@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class,ActivitiBasicIdentityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
