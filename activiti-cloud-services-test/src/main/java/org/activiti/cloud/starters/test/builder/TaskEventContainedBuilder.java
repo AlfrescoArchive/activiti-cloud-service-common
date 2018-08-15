@@ -23,8 +23,8 @@ import org.activiti.runtime.api.event.impl.CloudTaskAssignedEventImpl;
 import org.activiti.runtime.api.event.impl.CloudTaskCandidateUserAddedEventImpl;
 import org.activiti.runtime.api.event.impl.CloudTaskCompletedEventImpl;
 import org.activiti.runtime.api.event.impl.CloudTaskCreatedEventImpl;
-import org.activiti.runtime.api.model.ProcessInstance;
-import org.activiti.runtime.api.model.Task;
+import org.activiti.api.process.model.ProcessInstance;
+import org.activiti.api.task.model.Task;
 import org.activiti.runtime.api.model.impl.TaskCandidateUserImpl;
 import org.activiti.runtime.api.model.impl.TaskImpl;
 
