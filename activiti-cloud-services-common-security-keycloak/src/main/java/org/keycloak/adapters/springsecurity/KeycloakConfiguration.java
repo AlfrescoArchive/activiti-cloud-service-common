@@ -11,6 +11,8 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
+ * The below is an overriden keycloak class - temporary for https://github.com/Activiti/Activiti/issues/2201
+ *
  * Add this annotation to a class that extends {@code KeycloakWebSecurityConfigurerAdapter} to provide
  * a keycloak based Spring security configuration.
  *
