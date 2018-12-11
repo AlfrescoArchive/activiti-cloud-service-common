@@ -5,22 +5,22 @@
   <parent>
     <groupId>org.activiti.cloud.build</groupId>
     <artifactId>activiti-cloud-parent</artifactId>
-    <version>7.0.36</version>
+    <version>7.0.0.Beta4</version>
     <relativePath/>
   </parent>
 
   <groupId>org.activiti.cloud.common</groupId>
   <artifactId>activiti-cloud-service-common-parent</artifactId>
-  <version>7.0.58</version>
+  <version>7.0.0.Beta4</version>
   <packaging>pom</packaging>
   <name>Activiti Cloud :: Service Common Parent</name>
   <url>http://activiti.org</url>
 
   <properties>
-    <activiti-cloud-build.version>7.0.36</activiti-cloud-build.version>
-    <activiti-cloud-service-common.version>${project.version}</activiti-cloud-service-common.version>
-    <activiti-core-common.version>7.0.29</activiti-core-common.version>       
-    <activiti-cloud-api.version>7.0.34</activiti-cloud-api.version>
+    <activiti-cloud-build.version>7.0.0.Beta4</activiti-cloud-build.version>
+    <activiti-cloud-service-common.version>7.0.0.Beta4</activiti-cloud-service-common.version>
+    <activiti-core-common.version>7.0.0.Beta4</activiti-core-common.version>       
+    <activiti-cloud-api.version>7.0.0.Beta4</activiti-cloud-api.version>
 
     <!-- dependencies -->
     <awaitility.version>3.0.0</awaitility.version>
