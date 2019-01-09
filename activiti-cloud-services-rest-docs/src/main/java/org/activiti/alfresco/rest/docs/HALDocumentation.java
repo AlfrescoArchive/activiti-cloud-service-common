@@ -21,10 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.restdocs.hypermedia.LinkDescriptor;
+import org.springframework.restdocs.hypermedia.LinksSnippet;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 
@@ -56,6 +58,24 @@ public class HALDocumentation {
 
     public static LinkDescriptor selfLink() {
         return linkWithRel("self").description("URL called to get this result");
+    }
+
+    public static LinksSnippet pageLinks() {
+        return links(selfLink(),
+              linkWithRel("last")
+                      .description("The last page")
+                      .optional(),
+              linkWithRel("prev")
+                      .description("The previous page")
+                      .optional(),
+              linkWithRel("first")
+                      .description("The first page")
+                      .optional(),
+              linkWithRel("next")
+                      .description("The next page")
+                      .optional()
+
+        );
     }
 
     public static ResponseFieldsSnippet pagedProcessDefinitionFields() {
@@ -100,6 +120,47 @@ public class HALDocumentation {
                         .optional(),
                 subsectionWithPath("_embedded.processDefinitions.[].appVersion")
                         .description("The version of the application where this process is deployed")
+                        .type(String.class)
+                        .optional()
+        );
+    }
+
+    public static ResponseFieldsSnippet pagedProcessInstanceFields() {
+        return pagedResponseFields(
+                subsectionWithPath("_embedded.processInstances")
+                        .description("List of process instances"),
+                subsectionWithPath("_embedded.processInstances.[].id")
+                        .description("The process instance id"),
+                subsectionWithPath("_embedded.processInstances.[].processDefinitionId")
+                        .description("The id of related process definition"),
+                subsectionWithPath("_embedded.processInstances.[].status")
+                        .description("The process instance status"),
+                subsectionWithPath("_embedded.processInstances.[].name")
+                        .description("The process instance name")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.processInstances.[].serviceName")
+                        .description("The name of the service where this process is deployed")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.processInstances.[].serviceFullName")
+                        .description("The full name of the service where this process instance comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.processInstances.[].serviceVersion")
+                        .description("The version of the service where this process instance comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.processInstances.[].serviceType")
+                        .description("The type of the service where this process instance comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.processInstances.[].appName")
+                        .description("The name of the application where this process instance comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.processInstances.[].appVersion")
+                        .description("The version of the application where this process instance comes from")
                         .type(String.class)
                         .optional()
         );
