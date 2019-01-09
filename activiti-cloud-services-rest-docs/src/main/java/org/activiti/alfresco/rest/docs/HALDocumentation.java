@@ -140,7 +140,7 @@ public class HALDocumentation {
                         .type(String.class)
                         .optional(),
                 subsectionWithPath("_embedded.processInstances.[].serviceName")
-                        .description("The name of the service where this process is deployed")
+                        .description("The name of the service where this process instance comes from")
                         .type(String.class)
                         .optional(),
                 subsectionWithPath("_embedded.processInstances.[].serviceFullName")
@@ -161,6 +161,71 @@ public class HALDocumentation {
                         .optional(),
                 subsectionWithPath("_embedded.processInstances.[].appVersion")
                         .description("The version of the application where this process instance comes from")
+                        .type(String.class)
+                        .optional()
+        );
+    }
+
+    public static ResponseFieldsSnippet pagedTasksFields() {
+        return pagedResponseFields(
+                subsectionWithPath("_embedded.tasks")
+                        .description("List of tasks"),
+                subsectionWithPath("_embedded.tasks.[].id")
+                        .description("The task id"),
+                subsectionWithPath("_embedded.tasks.[].processDefinitionId")
+                        .description("The id of related process definition")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].processInstanceId")
+                        .description("The id of related process instance")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].assignee")
+                        .description("The task assignee")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].description")
+                        .description("The task description")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].createdDate")
+                        .description("The date where the task has been created"),
+                subsectionWithPath("_embedded.tasks.[].dueDate")
+                        .description("The date where the task is due")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].claimedDate")
+                        .description("The date where the task has been claimed")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].priority")
+                        .description("The task priority"),
+                subsectionWithPath("_embedded.tasks.[].status")
+                        .description("The task status"),
+                subsectionWithPath("_embedded.tasks.[].name")
+                        .description("The task name"),
+                subsectionWithPath("_embedded.tasks.[].serviceName")
+                        .description("The name of the service where this task comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].serviceFullName")
+                        .description("The full name of the service where this task comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].serviceVersion")
+                        .description("The version of the service where this task comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].serviceType")
+                        .description("The type of the service where this task comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].appName")
+                        .description("The name of the application where this task comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.tasks.[].appVersion")
+                        .description("The version of the application where this task comes from")
                         .type(String.class)
                         .optional()
         );
