@@ -235,7 +235,7 @@ public class HALDocumentation {
         return pagedResponseFields(
                 subsectionWithPath("_embedded.variables")
                         .description("List of variables"),
-                subsectionWithPath("_embedded.variables.[].processInstanceId2")
+                subsectionWithPath("_embedded.variables.[].processInstanceId")
                         .description("The id of related process instance"),
                 subsectionWithPath("_embedded.variables.[].taskId")
                         .description("The id of related task")
