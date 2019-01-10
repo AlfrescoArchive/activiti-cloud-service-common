@@ -230,4 +230,48 @@ public class HALDocumentation {
                         .optional()
         );
     }
+
+    public static ResponseFieldsSnippet pagedVariablesFields() {
+        return pagedResponseFields(
+                subsectionWithPath("_embedded.variables")
+                        .description("List of variables"),
+                subsectionWithPath("_embedded.variables.[].processInstanceId2")
+                        .description("The id of related process instance"),
+                subsectionWithPath("_embedded.variables.[].taskId")
+                        .description("The id of related task")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.variables.[].name")
+                        .description("The variable name"),
+                subsectionWithPath("_embedded.variables.[].value")
+                        .description("The variable value"),
+                subsectionWithPath("_embedded.variables.[].type")
+                        .description("The variable type"),
+                subsectionWithPath("_embedded.variables.[].serviceName")
+                        .description("The name of the service where this variable comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.variables.[].serviceFullName")
+                        .description("The full name of the service where this variable comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.variables.[].serviceVersion")
+                        .description("The version of the service where this variable comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.variables.[].serviceType")
+                        .description("The type of the service where this variable comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.variables.[].appName")
+                        .description("The name of the application where this variable comes from")
+                        .type(String.class)
+                        .optional(),
+                subsectionWithPath("_embedded.variables.[].appVersion")
+                        .description("The version of the application where this variable comes from")
+                        .type(String.class)
+                        .optional()
+        );
+    }
+
 }
