@@ -48,7 +48,8 @@ public class AlfrescoJackson2HttpMessageConverter<T> extends MappingJackson2Http
         Object transformedObject = object;
         if (object instanceof PagedResources) {
             transformedObject = pagedResourcesConverter.toAlfrescoContentListWrapper((PagedResources<Resource<T>>) object);
-        } else if (object instanceof Resources){
+        }
+        else if (object instanceof Resources){
             transformedObject = pagedResourcesConverter.toAlfrescoContentListWrapper((Resources<Resource<T>>) object);
         }
         else if (object instanceof Resource) {
