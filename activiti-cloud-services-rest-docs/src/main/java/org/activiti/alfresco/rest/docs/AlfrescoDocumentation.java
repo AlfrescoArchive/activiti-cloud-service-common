@@ -42,10 +42,7 @@ public class AlfrescoDocumentation {
                 parameterWithName("skipCount")
                         .description("How many entities exist in the entire addressed collection before those included in this list."),
                 parameterWithName("maxItems")
-                        .description("The max number of entities that can be included in the result."),
-                parameterWithName("delete")
-                        .optional()
-                        .description("flag to indicate if the retrieved elements should be deleted in a clean up endpoint")
+                        .description("The max number of entities that can be included in the result.")
         );
     }
 
