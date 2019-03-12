@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.activiti.cloud.common.properties.CommonPropertiesConfiguration
+org.activiti.cloud.common.properties.CommonPropertiesAutoConfiguration
