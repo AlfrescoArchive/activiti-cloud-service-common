@@ -17,10 +17,8 @@
 package org.activiti.cloud.alfresco.argument.resolver;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
-@Component
 public class AlfrescoPageParameterParser {
 
     private final int defaultPageSize;
