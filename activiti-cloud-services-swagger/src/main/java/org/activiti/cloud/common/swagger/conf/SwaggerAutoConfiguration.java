@@ -16,9 +16,7 @@
 
 package org.activiti.cloud.common.swagger.conf;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.fasterxml.classmate.TypeResolver;
