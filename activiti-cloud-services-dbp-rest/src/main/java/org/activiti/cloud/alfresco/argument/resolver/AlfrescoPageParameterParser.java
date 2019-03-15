@@ -16,14 +16,13 @@
 
 package org.activiti.cloud.alfresco.argument.resolver;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.request.NativeWebRequest;
 
 public class AlfrescoPageParameterParser {
 
     private final int defaultPageSize;
 
-    public AlfrescoPageParameterParser(@Value("${spring.data.rest.default-page-size:100}") int defaultPageSize) {
+    public AlfrescoPageParameterParser(int defaultPageSize) {
         this.defaultPageSize = defaultPageSize;
     }
 
