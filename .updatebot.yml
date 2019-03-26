@@ -17,9 +17,9 @@ github:
     - name: activiti-cloud-org-service
       branch: 7.0.x
       useSinglePullRequest: true
-    - name: activiti-cloud-process-model-service
-      branch: 7.0.x
-      useSinglePullRequest: true
+#     - name: activiti-cloud-process-model-service
+#       branch: 7.0.x
+#       useSinglePullRequest: true
     - name: activiti-cloud-app-service
       branch: 7.0.x
       useSinglePullRequest: true
