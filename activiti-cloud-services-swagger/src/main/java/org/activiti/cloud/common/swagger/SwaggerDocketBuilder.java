@@ -36,7 +36,9 @@ import springfox.documentation.builders.AlternateTypePropertyBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.schema.WildcardType;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
@@ -58,9 +60,11 @@ public class SwaggerDocketBuilder {
         this.apiInfo = apiInfo;
     }
 
-    public Docket buildHalAPIDocket() {
+    public Docket buildHalAPIDocket(SecurityScheme securityScheme, SecurityContext securityContext) {
         return baseDocket()
-                .groupName("hal");
+                .groupName("hal")
+                .securitySchemes(Arrays.asList(securityScheme))
+                .securityContexts(Arrays.asList(securityContext));
     }
 
     private Docket baseDocket() {
@@ -72,6 +76,8 @@ public class SwaggerDocketBuilder {
         if (apiInfo != null) {
             baseDocket.apiInfo(apiInfo);
         }
+        //TODO: this value should be a non-harcoded property
+        baseDocket.pathMapping("");
         return applyCustomizations(baseDocket);
     }
 
@@ -85,7 +91,7 @@ public class SwaggerDocketBuilder {
         return customizedDocket;
     }
 
-    public Docket buildAlfrescoAPIDocket() {
+    public Docket buildAlfrescoAPIDocket(SecurityScheme securityScheme, SecurityContext securityContext) {
         ResolvedType resourceTypeWithWildCard = typeResolver.resolve(Resource.class,
                                                                      WildcardType.class);
         return baseDocket()
@@ -102,7 +108,9 @@ public class SwaggerDocketBuilder {
                                                                  WildcardType.class)))
                 .alternateTypeRules(newRule(typeResolver.resolve(Pageable.class),
                                             pageableMixin(),
-                                            Ordered.HIGHEST_PRECEDENCE));
+                                            Ordered.HIGHEST_PRECEDENCE))
+                .securitySchemes(Arrays.asList(securityScheme))
+                .securityContexts(Arrays.asList(securityContext));
     }
 
     private Type pageableMixin() {
