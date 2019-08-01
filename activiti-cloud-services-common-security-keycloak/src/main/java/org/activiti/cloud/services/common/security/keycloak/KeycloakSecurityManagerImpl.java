@@ -31,7 +31,7 @@ public class KeycloakSecurityManagerImpl implements SecurityManager {
     }
     
     @Override
-    public List<String> getAuthenticatedUserGroups() {
+    public Optional<List<String>> getAuthenticatedUserGroups() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                        .map(SecurityContext::getAuthentication)
                        .map(Authentication::getCredentials)
@@ -42,7 +42,6 @@ public class KeycloakSecurityManagerImpl implements SecurityManager {
                        .map(it -> it.get("groups"))
                        .filter(Collection.class::isInstance)
                        .map(Collection.class::cast)
-                       .map(it -> Collections.unmodifiableList(new ArrayList<String>(it)))
-                       .orElse(Collections.emptyList());
-    }    
+                       .map(it -> Collections.unmodifiableList(new ArrayList<String>(it)));
+    }
 }
