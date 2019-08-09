@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.activiti.cloud.common</groupId>
     <artifactId>activiti-cloud-service-common-parent</artifactId>
-    <version>7.1.45</version>
+    <version>7.1.0.M3.1</version>
   </parent>
   <artifactId>activiti-cloud-service-common-dependencies-tests</artifactId>
   <packaging>pom</packaging>
