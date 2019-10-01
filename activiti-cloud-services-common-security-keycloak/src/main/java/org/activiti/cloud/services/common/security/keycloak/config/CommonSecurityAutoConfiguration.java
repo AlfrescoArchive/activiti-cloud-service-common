@@ -54,23 +54,27 @@ public class CommonSecurityAutoConfiguration extends KeycloakWebSecurityConfigur
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
+    @Override
     protected KeycloakAuthenticationProvider keycloakAuthenticationProvider() {
-        return new KeycloakAuthenticationProvider();
+        return keycloakAuthenticationProvider;
     }
     
     @Bean
     @Primary
+    @ConditionalOnMissingBean
     public SecurityManager securityManager() {
         return new KeycloakSecurityManagerImpl();
     }
     
     @Bean
     @Primary
+    @ConditionalOnMissingBean
     public SecurityContextTokenProvider securityContextTokenProvider () {
         return new KeycloakSecurityContextTokenProvider();
     }
     
     @Bean
+    @ConditionalOnMissingBean
     public KeycloakConfigResolver KeycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
@@ -88,6 +92,7 @@ public class CommonSecurityAutoConfiguration extends KeycloakWebSecurityConfigur
      */
     @Bean
     @Override
+    @ConditionalOnMissingBean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
