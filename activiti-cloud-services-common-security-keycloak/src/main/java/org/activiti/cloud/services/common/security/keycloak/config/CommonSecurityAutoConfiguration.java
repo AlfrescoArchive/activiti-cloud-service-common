@@ -43,6 +43,8 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @ConditionalOnWebApplication
 @ConditionalOnMissingBean(value = {KeycloakConfigResolver.class, SessionAuthenticationStrategy.class, SessionAuthenticationStrategy.class})
 public class CommonSecurityAutoConfiguration extends KeycloakWebSecurityConfigurerAdapter {
+    
+    private KeycloakAuthenticationProvider keycloakAuthenticationProvider = new KeycloakAuthenticationProvider();
 
     /**
      * Registers the KeycloakAuthenticationProvider with the authentication manager.
@@ -102,5 +104,11 @@ public class CommonSecurityAutoConfiguration extends KeycloakWebSecurityConfigur
         super.configure(http);
         http.authorizeRequests()
                 .anyRequest().permitAll().and().csrf().disable().httpBasic().disable();
+    }
+
+    
+    @Autowired(required = false)
+    public void setKeycloakAuthenticationProvider(KeycloakAuthenticationProvider keycloakAuthenticationProvider) {
+        this.keycloakAuthenticationProvider = keycloakAuthenticationProvider;
     }
 }
