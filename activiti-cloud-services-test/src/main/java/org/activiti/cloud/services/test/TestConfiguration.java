@@ -16,39 +16,41 @@
 
 package org.activiti.cloud.services.test;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.activiti.cloud.services.identity.keycloak.KeycloakProperties;
 import org.activiti.cloud.services.test.identity.keycloak.interceptor.KeycloakTokenProducer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-@Configuration
-@ComponentScan({"org.activiti.cloud.services.test"})
-public class TestConfiguration {
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 
-    private final KeycloakTokenProducer keycloakSecurityContextClientRequestInterceptor;
+@Configuration
+public class TestConfiguration {
 
     private final List<Module> modules;
 
-    public TestConfiguration(KeycloakTokenProducer keycloakSecurityContextClientRequestInterceptor,
-                             List<Module> modules) {
-        this.keycloakSecurityContextClientRequestInterceptor = keycloakSecurityContextClientRequestInterceptor;
+    public TestConfiguration(List<Module> modules) {
         this.modules = modules;
+    }
+    
+    @Bean
+    @ConditionalOnMissingBean
+    public KeycloakTokenProducer keycloakTokenProducer(KeycloakProperties keycloakProperties) {
+        return new KeycloakTokenProducer(keycloakProperties);
     }
 
     @Bean
-    public RestTemplateBuilder restTemplateBuilder() {
+    public RestTemplateBuilder restTemplateBuilder(KeycloakTokenProducer keycloakTokenProducer) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
                          false);
@@ -65,6 +67,6 @@ public class TestConfiguration {
 
         return new RestTemplateBuilder().additionalMessageConverters(
                 jackson2HttpMessageConverter,
-                new StringHttpMessageConverter(StandardCharsets.UTF_8)).additionalInterceptors(keycloakSecurityContextClientRequestInterceptor);
+                new StringHttpMessageConverter(StandardCharsets.UTF_8)).additionalInterceptors(keycloakTokenProducer);
     }
 }
