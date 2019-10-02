@@ -21,26 +21,38 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.activiti.cloud.services.identity.keycloak.KeycloakProperties;
 import org.activiti.cloud.services.test.identity.keycloak.interceptor.KeycloakTokenProducer;
+import org.activiti.cloud.starters.test.MyProducer;
+import org.activiti.cloud.starters.test.StreamProducer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.messaging.MessageChannel;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
 @Configuration
+@EnableBinding(StreamProducer.class)
 public class TestConfiguration {
 
     private final List<Module> modules;
 
     public TestConfiguration(List<Module> modules) {
         this.modules = modules;
+    }
+    
+    
+    @Bean
+    @ConditionalOnMissingBean
+    public MyProducer myProducer(MessageChannel producer) {
+        return new MyProducer(producer);
     }
     
     @Bean
@@ -54,7 +66,9 @@ public class TestConfiguration {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
                          false);
+        
         mapper.registerModule(new Jackson2HalModule());
+        
         for (Module module : modules) {
             if (module.getModuleName().startsWith("map")) {
                 mapper.registerModule(module);
@@ -69,4 +83,5 @@ public class TestConfiguration {
                 jackson2HttpMessageConverter,
                 new StringHttpMessageConverter(StandardCharsets.UTF_8)).additionalInterceptors(keycloakTokenProducer);
     }
+    
 }
