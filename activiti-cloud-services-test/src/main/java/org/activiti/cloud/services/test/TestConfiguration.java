@@ -23,22 +23,26 @@ import org.activiti.cloud.services.identity.keycloak.KeycloakProperties;
 import org.activiti.cloud.services.test.identity.keycloak.interceptor.KeycloakTokenProducer;
 import org.activiti.cloud.starters.test.MyProducer;
 import org.activiti.cloud.starters.test.StreamProducer;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.messaging.MessageChannel;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@AutoConfigureBefore(value=RestTemplateAutoConfiguration.class)
 @EnableBinding(StreamProducer.class)
 public class TestConfiguration {
 
@@ -47,7 +51,6 @@ public class TestConfiguration {
     public TestConfiguration(List<Module> modules) {
         this.modules = modules;
     }
-    
     
     @Bean
     @ConditionalOnMissingBean
@@ -62,6 +65,7 @@ public class TestConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RestTemplateBuilder restTemplateBuilder(KeycloakTokenProducer keycloakTokenProducer) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
@@ -76,7 +80,7 @@ public class TestConfiguration {
         }
 
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        jackson2HttpMessageConverter.setSupportedMediaTypes(Collections.singletonList(MediaTypes.HAL_JSON));
+        jackson2HttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaTypes.HAL_JSON, MediaType.APPLICATION_JSON));
         jackson2HttpMessageConverter.setObjectMapper(mapper);
 
         return new RestTemplateBuilder().additionalMessageConverters(
