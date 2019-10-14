@@ -15,8 +15,16 @@ package org.activiti.cloud.services.common.security.keycloak.config;/*
  */
 
 
+import org.activiti.api.runtime.shared.security.SecurityContextPrincipalProvider;
+import org.activiti.api.runtime.shared.security.PrincipalDetailsProvider;
+import org.activiti.api.runtime.shared.security.PrincipalIdentityProvider;
 import org.activiti.api.runtime.shared.security.SecurityContextTokenProvider;
 import org.activiti.api.runtime.shared.security.SecurityManager;
+import org.activiti.cloud.services.common.security.keycloak.KeycloakAccessTokenProvider;
+import org.activiti.cloud.services.common.security.keycloak.KeycloakAccessTokenValidator;
+import org.activiti.cloud.services.common.security.keycloak.KeycloakSecurityContextPrincipalProvider;
+import org.activiti.cloud.services.common.security.keycloak.KeycloakPrincipalDetailsProvider;
+import org.activiti.cloud.services.common.security.keycloak.KeycloakPrincipalIdentityProvider;
 import org.activiti.cloud.services.common.security.keycloak.KeycloakSecurityContextTokenProvider;
 import org.activiti.cloud.services.common.security.keycloak.KeycloakSecurityManagerImpl;
 import org.keycloak.adapters.KeycloakConfigResolver;
@@ -59,11 +67,49 @@ public class CommonSecurityAutoConfiguration extends KeycloakWebSecurityConfigur
     public KeycloakAuthenticationProvider keycloakAuthenticationProvider() {
         return new KeycloakAuthenticationProvider();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SecurityContextPrincipalProvider authenticatedPrincipalProvider() {
+        return new KeycloakSecurityContextPrincipalProvider();
+    }
     
     @Bean
     @ConditionalOnMissingBean
-    public SecurityManager securityManager() {
-        return new KeycloakSecurityManagerImpl();
+    public KeycloakAccessTokenProvider keycloakAccessTokenProvider() {
+        return new KeycloakAccessTokenProvider() { };
+    }
+    
+    @Bean
+    @ConditionalOnMissingBean
+    public KeycloakAccessTokenValidator keycloakAccessTokenValidator() {
+        return new KeycloakAccessTokenValidator() { };
+    }
+    
+    @Bean
+    @ConditionalOnMissingBean
+    public PrincipalIdentityProvider principalIdentityProvider(KeycloakAccessTokenProvider keycloakAccessTokenProvider,
+                                                               KeycloakAccessTokenValidator keycloakAccessTokenValidator) {
+        return new KeycloakPrincipalIdentityProvider(keycloakAccessTokenProvider, 
+                                                     keycloakAccessTokenValidator);
+    }
+    
+    @Bean
+    @ConditionalOnMissingBean
+    public PrincipalDetailsProvider principalDetailsProvider(KeycloakAccessTokenProvider keycloakAccessTokenProvider,
+                                                             KeycloakAccessTokenValidator keycloakAccessTokenValidator) {
+        return new KeycloakPrincipalDetailsProvider(keycloakAccessTokenProvider,
+                                                    keycloakAccessTokenValidator);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SecurityManager securityManager(SecurityContextPrincipalProvider authenticatedPrincipalProvider,
+                                           PrincipalIdentityProvider principalIdentityProvider,
+                                           PrincipalDetailsProvider principalDetailsProvider) {
+        return new KeycloakSecurityManagerImpl(authenticatedPrincipalProvider,
+                                               principalIdentityProvider,
+                                               principalDetailsProvider);
     }
     
     @Bean
