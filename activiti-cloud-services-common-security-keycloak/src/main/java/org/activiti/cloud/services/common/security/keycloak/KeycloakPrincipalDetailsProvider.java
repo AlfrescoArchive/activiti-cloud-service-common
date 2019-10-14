@@ -46,7 +46,7 @@ public class KeycloakPrincipalDetailsProvider implements PrincipalDetailsProvide
                                           .map(it -> it.get("groups"))
                                           .filter(Collection.class::isInstance)
                                           .<Collection<String>>map(Collection.class::cast)
-                                          .map(groups -> Collections.unmodifiableList(new ArrayList<>(groups)))
+                                          .map(groups -> Collections.unmodifiableList(new ArrayList<String>(groups)))
                                           .orElseThrow(() -> new SecurityException("Invalid groups claim in access token"));
     }
 
