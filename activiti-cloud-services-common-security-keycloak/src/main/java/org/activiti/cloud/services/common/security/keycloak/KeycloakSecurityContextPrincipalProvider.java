@@ -18,6 +18,7 @@ package org.activiti.cloud.services.common.security.keycloak;
 
 import org.activiti.api.runtime.shared.security.SecurityContextPrincipalProvider;
 import org.keycloak.KeycloakPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -30,6 +31,7 @@ public class KeycloakSecurityContextPrincipalProvider implements SecurityContext
     public Optional<Principal> getCurrentPrincipal() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                        .map(SecurityContext::getAuthentication)
+                       .map(Authentication::getPrincipal)
                        .filter(KeycloakPrincipal.class::isInstance)
                        .map(KeycloakPrincipal.class::cast);
     }
