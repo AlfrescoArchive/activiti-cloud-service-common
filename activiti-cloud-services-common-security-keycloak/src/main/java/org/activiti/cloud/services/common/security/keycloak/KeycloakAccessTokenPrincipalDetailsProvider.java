@@ -20,6 +20,7 @@ import org.activiti.api.runtime.shared.security.PrincipalDetailsProvider;
 import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.AccessToken.Access;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -27,13 +28,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class KeycloakPrincipalDetailsProvider implements PrincipalDetailsProvider {
+public class KeycloakAccessTokenPrincipalDetailsProvider implements PrincipalDetailsProvider {
 
     private final KeycloakAccessTokenProvider keycloakAccessTokenProvider;
     private final KeycloakAccessTokenValidator keycloakAccessTokenValidator;
     
-    public KeycloakPrincipalDetailsProvider(@NonNull KeycloakAccessTokenProvider keycloakSecurityContextProvider,
-                                            @NonNull KeycloakAccessTokenValidator keycloakAccessTokenValidator) {
+    public KeycloakAccessTokenPrincipalDetailsProvider(@NonNull KeycloakAccessTokenProvider keycloakSecurityContextProvider,
+                                                       @NonNull KeycloakAccessTokenValidator keycloakAccessTokenValidator) {
         this.keycloakAccessTokenProvider = keycloakSecurityContextProvider;
         this.keycloakAccessTokenValidator = keycloakAccessTokenValidator;
     }
@@ -43,11 +44,12 @@ public class KeycloakPrincipalDetailsProvider implements PrincipalDetailsProvide
         return keycloakAccessTokenProvider.accessToken(principal)
                                           .filter(keycloakAccessTokenValidator::isValid)
                                           .map(AccessToken::getOtherClaims)
-                                          .map(it -> it.get("groups"))
+                                          .map(otherClaims -> otherClaims.get("groups"))
                                           .filter(Collection.class::isInstance)
-                                          .<Collection<String>>map(Collection.class::cast)
-                                          .map(groups -> Collections.unmodifiableList(new ArrayList<String>(groups)))
-                                          .orElseThrow(() -> new SecurityException("Invalid groups claim in access token"));
+                                          .map(c -> (Collection<String>) c)
+                                          .map(ArrayList::new)
+                                          .map(Collections::unmodifiableList)
+                                          .orElseGet(this::empty);
     }
 
     @Override
@@ -56,7 +58,13 @@ public class KeycloakPrincipalDetailsProvider implements PrincipalDetailsProvide
                                           .filter(keycloakAccessTokenValidator::isValid)
                                           .map(AccessToken::getRealmAccess)
                                           .map(Access::getRoles)
-                                          .map(roles -> Collections.unmodifiableList(new ArrayList<String>(roles)))
-                                          .orElseThrow(() -> new SecurityException("Invalid realm access roles in access token"));
+                                          .map(ArrayList::new)
+                                          .map(Collections::unmodifiableList)
+                                          .orElseGet(this::empty);
     }
+    
+    protected @Nullable List<String> empty() {
+        return null;
+    }
+    
 }
