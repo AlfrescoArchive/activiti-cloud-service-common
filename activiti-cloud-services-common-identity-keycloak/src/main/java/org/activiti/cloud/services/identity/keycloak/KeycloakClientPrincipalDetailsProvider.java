@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class KeycloakRealmPrincipalDetailsProvider implements PrincipalDetailsProvider {
+public class KeycloakClientPrincipalDetailsProvider implements PrincipalDetailsProvider {
     
     private final KeycloakInstanceWrapper keycloakInstanceWrapper;
     
-    public KeycloakRealmPrincipalDetailsProvider(KeycloakInstanceWrapper keycloakInstanceWrapper) {
+    public KeycloakClientPrincipalDetailsProvider(KeycloakInstanceWrapper keycloakInstanceWrapper) {
         this.keycloakInstanceWrapper = keycloakInstanceWrapper;
     }
     
