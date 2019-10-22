@@ -16,7 +16,9 @@
 
 package org.activiti.cloud.services.identity.keycloak;
 
-import org.activiti.api.runtime.shared.security.PrincipalDetailsProvider;
+import org.activiti.api.runtime.shared.security.PrincipalGroupsProvider;
+import org.activiti.api.runtime.shared.security.PrincipalRolesProvider;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 
@@ -26,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class KeycloakClientPrincipalDetailsProvider implements PrincipalDetailsProvider {
+public class KeycloakClientPrincipalDetailsProvider implements PrincipalGroupsProvider, PrincipalRolesProvider {
     
     private final KeycloakInstanceWrapper keycloakInstanceWrapper;
     
@@ -37,10 +39,7 @@ public class KeycloakClientPrincipalDetailsProvider implements PrincipalDetailsP
 
     @Override
     public List<String> getGroups(Principal principal) {
-        return keycloakInstanceWrapper.getRealm()
-                                      .users()
-                                      .get(getId(principal))
-                                      .groups()
+        return userResource(principal).groups()
                                       .stream()
                                       .map(GroupRepresentation::getName)
                                       .collect(Collectors.collectingAndThen(Collectors.toList(),
@@ -49,10 +48,7 @@ public class KeycloakClientPrincipalDetailsProvider implements PrincipalDetailsP
     
     @Override
     public List<String> getRoles(Principal principal) {
-        return keycloakInstanceWrapper.getRealm()
-                                      .users()
-                                      .get(getId(principal))
-                                      .roles()
+        return userResource(principal).roles()
                                       .realmLevel()
                                       .listEffective()
                                       .stream()
@@ -61,14 +57,20 @@ public class KeycloakClientPrincipalDetailsProvider implements PrincipalDetailsP
                                                                             Collections::unmodifiableList));
     }
     
-    protected String getId(Principal principal) {
+    protected UserResource userResource(Principal principal) {
+        return keycloakInstanceWrapper.getRealm()
+                                      .users()
+                                      .get(subjectId(principal));
+    }
+    
+    protected String subjectId(Principal principal) {
         return Optional.of(principal)
                        .map(Principal::getName)
                        .orElseThrow(this::securityException);
     }
     
     protected SecurityException securityException() {
-        return new SecurityException("Invalid Keycloak principal");
+        return new SecurityException("Invalid Keycloak principal subject id");
     }
 
 }

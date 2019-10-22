@@ -16,9 +16,8 @@
 
 package org.activiti.cloud.services.common.security.keycloak;
 
-import org.activiti.api.runtime.shared.security.PrincipalDetailsProvider;
+import org.activiti.api.runtime.shared.security.PrincipalGroupsProvider;
 import org.keycloak.representations.AccessToken;
-import org.keycloak.representations.AccessToken.Access;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -28,13 +27,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class KeycloakAccessTokenPrincipalDetailsProvider implements PrincipalDetailsProvider {
+public class KeycloakAccessTokenPrincipalGroupsProvider implements PrincipalGroupsProvider {
 
     private final KeycloakAccessTokenProvider keycloakAccessTokenProvider;
     private final KeycloakAccessTokenValidator keycloakAccessTokenValidator;
     
-    public KeycloakAccessTokenPrincipalDetailsProvider(@NonNull KeycloakAccessTokenProvider keycloakSecurityContextProvider,
-                                                       @NonNull KeycloakAccessTokenValidator keycloakAccessTokenValidator) {
+    public KeycloakAccessTokenPrincipalGroupsProvider(@NonNull KeycloakAccessTokenProvider keycloakSecurityContextProvider,
+                                                      @NonNull KeycloakAccessTokenValidator keycloakAccessTokenValidator) {
         this.keycloakAccessTokenProvider = keycloakSecurityContextProvider;
         this.keycloakAccessTokenValidator = keycloakAccessTokenValidator;
     }
@@ -52,17 +51,6 @@ public class KeycloakAccessTokenPrincipalDetailsProvider implements PrincipalDet
                                           .orElseGet(this::empty);
     }
 
-    @Override
-    public List<String> getRoles(@NonNull Principal principal) {
-        return keycloakAccessTokenProvider.accessToken(principal)
-                                          .filter(keycloakAccessTokenValidator::isValid)
-                                          .map(AccessToken::getRealmAccess)
-                                          .map(Access::getRoles)
-                                          .map(ArrayList::new)
-                                          .map(Collections::unmodifiableList)
-                                          .orElseGet(this::empty);
-    }
-    
     protected @Nullable List<String> empty() {
         return null;
     }

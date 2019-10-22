@@ -38,13 +38,14 @@ public class KeycloakPrincipalIdentityProvider implements PrincipalIdentityProvi
     public String getUserId(@NonNull Principal principal) {
         return keycloakAccessTokenProvider.accessToken(principal)
                                           .filter(keycloakAccessTokenValidator::isValid)
-                                          .flatMap(this::getUserId)
-                                          .orElseGet(principal::getName);
+                                          .map(this::getUserId)
+                                          .orElseThrow(this::securityException);
     }
     
-    protected Optional<String> getUserId(AccessToken accessToken) {
+    protected String getUserId(AccessToken accessToken) {
         return Optional.ofNullable(accessToken)
-                       .map(AccessToken::getPreferredUsername);
+                       .map(AccessToken::getPreferredUsername)
+                       .orElseThrow(this::securityException);
     }
     
     protected SecurityException securityException() {

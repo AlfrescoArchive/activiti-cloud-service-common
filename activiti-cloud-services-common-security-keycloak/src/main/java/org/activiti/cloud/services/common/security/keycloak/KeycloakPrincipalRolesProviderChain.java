@@ -16,32 +16,20 @@
 
 package org.activiti.cloud.services.common.security.keycloak;
 
-import org.activiti.api.runtime.shared.security.PrincipalDetailsProvider;
-import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+import org.activiti.api.runtime.shared.security.PrincipalRolesProvider;
 import org.springframework.lang.NonNull;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class KeycloakPrincipalDetailsProviderChain implements PrincipalDetailsProvider {
+public class KeycloakPrincipalRolesProviderChain implements PrincipalRolesProvider {
     
-    private final List<PrincipalDetailsProvider> providers;
+    private final List<PrincipalRolesProvider> providers;
     
-    public KeycloakPrincipalDetailsProviderChain(@NonNull List<PrincipalDetailsProvider> providers) {
-        this.providers = providers.stream()
-                                  .sorted(AnnotationAwareOrderComparator.INSTANCE)
-                                  .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<String> getGroups(@NonNull Principal principal) {
-        return providers.stream()
-                        .map(provider -> provider.getGroups(principal))
-                        .filter(Objects::nonNull)
-                        .findFirst()
-                        .orElseThrow(this::securityException);
+    public KeycloakPrincipalRolesProviderChain(@NonNull List<PrincipalRolesProvider> providers) {
+        this.providers = Collections.unmodifiableList(providers);
     }
 
     @Override
@@ -54,6 +42,6 @@ public class KeycloakPrincipalDetailsProviderChain implements PrincipalDetailsPr
     }
     
     protected SecurityException securityException() {
-        return new SecurityException("Invalid principal security access token");
+        return new SecurityException("Invalid principal security access token roles");
     }
 }
