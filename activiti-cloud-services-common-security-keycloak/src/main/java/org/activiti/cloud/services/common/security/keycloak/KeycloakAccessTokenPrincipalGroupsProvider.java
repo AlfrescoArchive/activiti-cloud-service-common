@@ -32,9 +32,9 @@ public class KeycloakAccessTokenPrincipalGroupsProvider implements PrincipalGrou
     private final KeycloakAccessTokenProvider keycloakAccessTokenProvider;
     private final KeycloakAccessTokenValidator keycloakAccessTokenValidator;
     
-    public KeycloakAccessTokenPrincipalGroupsProvider(@NonNull KeycloakAccessTokenProvider keycloakSecurityContextProvider,
+    public KeycloakAccessTokenPrincipalGroupsProvider(@NonNull KeycloakAccessTokenProvider keycloakAccessTokenProvider,
                                                       @NonNull KeycloakAccessTokenValidator keycloakAccessTokenValidator) {
-        this.keycloakAccessTokenProvider = keycloakSecurityContextProvider;
+        this.keycloakAccessTokenProvider = keycloakAccessTokenProvider;
         this.keycloakAccessTokenValidator = keycloakAccessTokenValidator;
     }
     
