@@ -49,13 +49,13 @@ public class KeycloakAccessTokenValidatorTest {
         // given
         AccessToken accessToken = mock(AccessToken.class);
         
-        when(accessToken.isActive()).thenReturn(true);
+        when(accessToken.isActive()).thenReturn(false);
         
         // when
         Boolean result = subject.isValid(accessToken);
         
         // then
-        assertThat(result).isTrue();
+        assertThat(result).isFalse();
     }
 
     @Test
