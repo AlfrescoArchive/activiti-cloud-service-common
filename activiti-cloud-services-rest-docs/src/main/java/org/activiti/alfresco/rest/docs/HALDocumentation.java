@@ -326,4 +326,23 @@ public class HALDocumentation {
         );
     }
 
+    public static ResponseFieldsSnippet unpagedCandidateGroups(){
+        return responseFields(
+                subsectionWithPath("_embedded.candidateGroups")
+                        .description("List of candidate groups"),
+                subsectionWithPath("_links")
+                        .ignored()
+        );
+    }
+
+    public static ResponseFieldsSnippet unpagedCandidateUsers(){
+        return responseFields(
+                subsectionWithPath("_embedded.candidateUsers")
+                        .description("List of candidate users"),
+                subsectionWithPath("_links")
+                        .ignored()
+        );
+    }
+
+
 }
