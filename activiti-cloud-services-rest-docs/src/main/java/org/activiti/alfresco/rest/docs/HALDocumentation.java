@@ -330,6 +330,8 @@ public class HALDocumentation {
         return responseFields(
                 subsectionWithPath("_embedded.candidateGroups")
                         .description("List of candidate groups"),
+                subsectionWithPath("_embedded.candidateGroups.[].group")
+                        .description("The group name"),
                 subsectionWithPath("_links")
                         .ignored()
         );
@@ -339,6 +341,8 @@ public class HALDocumentation {
         return responseFields(
                 subsectionWithPath("_embedded.candidateUsers")
                         .description("List of candidate users"),
+                subsectionWithPath("_embedded.candidateUsers.[].user")
+                        .description("The user name"),
                 subsectionWithPath("_links")
                         .ignored()
         );
